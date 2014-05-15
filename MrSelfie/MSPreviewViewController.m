@@ -11,7 +11,13 @@
 @interface MSPreviewViewController ()
 
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
+@property (nonatomic, strong) IBOutlet UIView *buttonContainerView;
+@property (nonatomic, strong) IBOutlet UIButton *shareButton;
+@property (nonatomic, strong) IBOutlet UIButton *retakeButton;
 @property (nonatomic) int currentIndex;
+
+- (IBAction)share:(id)sender;
+- (IBAction)retake:(id)sender;
 
 @end
 
@@ -39,6 +45,16 @@
     // default case, increment and show the next image
     self.currentIndex += 1;
     [self performSelector:@selector(showNextImage) withObject:nil afterDelay:0.250];
+}
+
+- (IBAction)share:(id)sender {
+    
+}
+
+- (IBAction)retake:(id)sender {
+    [self dismissViewControllerAnimated:NO completion:^(void){
+        
+    }];
 }
 
 @end

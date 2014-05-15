@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BDFD6D921925774E00D74AEF /* MSPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDFD6D911925774E00D74AEF /* MSPreviewViewController.m */; };
+		BDFD6D9519257C3E00D74AEF /* MSCamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDFD6D9419257C3E00D74AEF /* MSCamViewController.m */; };
+		BDFD6D9819257C4900D74AEF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDFD6D9619257C4900D74AEF /* Main.storyboard */; };
 		C13377A81925701C0067F20E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C13377A71925701C0067F20E /* Foundation.framework */; };
 		C13377AA1925701C0067F20E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C13377A91925701C0067F20E /* CoreGraphics.framework */; };
 		C13377AC1925701C0067F20E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C13377AB1925701C0067F20E /* UIKit.framework */; };
@@ -19,8 +22,6 @@
 		C13377C31925701C0067F20E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C13377AB1925701C0067F20E /* UIKit.framework */; };
 		C13377CB1925701C0067F20E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C13377C91925701C0067F20E /* InfoPlist.strings */; };
 		C13377CD1925701C0067F20E /* MrSelfieTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C13377CC1925701C0067F20E /* MrSelfieTests.m */; };
-		C13377DA192574530067F20E /* MSCamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C13377D9192574530067F20E /* MSCamViewController.m */; };
-		C133781E1925765B0067F20E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C133781C1925765B0067F20E /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +35,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BDFD6D901925774E00D74AEF /* MSPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSPreviewViewController.h; sourceTree = "<group>"; };
+		BDFD6D911925774E00D74AEF /* MSPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSPreviewViewController.m; sourceTree = "<group>"; };
+		BDFD6D9319257C3E00D74AEF /* MSCamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCamViewController.h; sourceTree = "<group>"; };
+		BDFD6D9419257C3E00D74AEF /* MSCamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCamViewController.m; sourceTree = "<group>"; };
+		BDFD6D9719257C4900D74AEF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C13377A41925701C0067F20E /* MrSelfie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MrSelfie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C13377A71925701C0067F20E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C13377A91925701C0067F20E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -50,9 +56,6 @@
 		C13377C81925701C0067F20E /* MrSelfieTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MrSelfieTests-Info.plist"; sourceTree = "<group>"; };
 		C13377CA1925701C0067F20E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C13377CC1925701C0067F20E /* MrSelfieTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MrSelfieTests.m; sourceTree = "<group>"; };
-		C13377D8192574530067F20E /* MSCamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCamViewController.h; sourceTree = "<group>"; };
-		C13377D9192574530067F20E /* MSCamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCamViewController.m; sourceTree = "<group>"; };
-		C133781D1925765B0067F20E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,12 +115,14 @@
 		C13377AD1925701C0067F20E /* MrSelfie */ = {
 			isa = PBXGroup;
 			children = (
-				C13377B91925701C0067F20E /* Images.xcassets */,
-				C133781C1925765B0067F20E /* Main.storyboard */,
+				BDFD6D9619257C4900D74AEF /* Main.storyboard */,
+				BDFD6D9319257C3E00D74AEF /* MSCamViewController.h */,
+				BDFD6D9419257C3E00D74AEF /* MSCamViewController.m */,
 				C13377B61925701C0067F20E /* MSAppDelegate.h */,
 				C13377B71925701C0067F20E /* MSAppDelegate.m */,
-				C13377D8192574530067F20E /* MSCamViewController.h */,
-				C13377D9192574530067F20E /* MSCamViewController.m */,
+				BDFD6D901925774E00D74AEF /* MSPreviewViewController.h */,
+				BDFD6D911925774E00D74AEF /* MSPreviewViewController.m */,
+				C13377B91925701C0067F20E /* Images.xcassets */,
 				C13377AE1925701C0067F20E /* Supporting Files */,
 			);
 			path = MrSelfie;
@@ -229,7 +234,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C133781E1925765B0067F20E /* Main.storyboard in Resources */,
+				BDFD6D9819257C4900D74AEF /* Main.storyboard in Resources */,
 				C13377B21925701C0067F20E /* InfoPlist.strings in Resources */,
 				C13377BA1925701C0067F20E /* Images.xcassets in Resources */,
 			);
@@ -250,9 +255,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDFD6D9519257C3E00D74AEF /* MSCamViewController.m in Sources */,
 				C13377B81925701C0067F20E /* MSAppDelegate.m in Sources */,
+				BDFD6D921925774E00D74AEF /* MSPreviewViewController.m in Sources */,
 				C13377B41925701C0067F20E /* main.m in Sources */,
-				C13377DA192574530067F20E /* MSCamViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,6 +281,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		BDFD6D9619257C4900D74AEF /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BDFD6D9719257C4900D74AEF /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		C13377B01925701C0067F20E /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -289,14 +303,6 @@
 				C13377CA1925701C0067F20E /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		C133781C1925765B0067F20E /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C133781D1925765B0067F20E /* Base */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

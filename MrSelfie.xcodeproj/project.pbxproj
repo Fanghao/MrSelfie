@@ -19,6 +19,8 @@
 		C13377C31925701C0067F20E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C13377AB1925701C0067F20E /* UIKit.framework */; };
 		C13377CB1925701C0067F20E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C13377C91925701C0067F20E /* InfoPlist.strings */; };
 		C13377CD1925701C0067F20E /* MrSelfieTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C13377CC1925701C0067F20E /* MrSelfieTests.m */; };
+		C13377DA192574530067F20E /* MSCamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C13377D9192574530067F20E /* MSCamViewController.m */; };
+		C133781E1925765B0067F20E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C133781C1925765B0067F20E /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +50,9 @@
 		C13377C81925701C0067F20E /* MrSelfieTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MrSelfieTests-Info.plist"; sourceTree = "<group>"; };
 		C13377CA1925701C0067F20E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C13377CC1925701C0067F20E /* MrSelfieTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MrSelfieTests.m; sourceTree = "<group>"; };
+		C13377D8192574530067F20E /* MSCamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCamViewController.h; sourceTree = "<group>"; };
+		C13377D9192574530067F20E /* MSCamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCamViewController.m; sourceTree = "<group>"; };
+		C133781D1925765B0067F20E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,9 +112,12 @@
 		C13377AD1925701C0067F20E /* MrSelfie */ = {
 			isa = PBXGroup;
 			children = (
+				C13377B91925701C0067F20E /* Images.xcassets */,
+				C133781C1925765B0067F20E /* Main.storyboard */,
 				C13377B61925701C0067F20E /* MSAppDelegate.h */,
 				C13377B71925701C0067F20E /* MSAppDelegate.m */,
-				C13377B91925701C0067F20E /* Images.xcassets */,
+				C13377D8192574530067F20E /* MSCamViewController.h */,
+				C13377D9192574530067F20E /* MSCamViewController.m */,
 				C13377AE1925701C0067F20E /* Supporting Files */,
 			);
 			path = MrSelfie;
@@ -203,6 +211,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = C133779B1925701C0067F20E;
 			productRefGroup = C13377A51925701C0067F20E /* Products */;
@@ -220,6 +229,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C133781E1925765B0067F20E /* Main.storyboard in Resources */,
 				C13377B21925701C0067F20E /* InfoPlist.strings in Resources */,
 				C13377BA1925701C0067F20E /* Images.xcassets in Resources */,
 			);
@@ -242,6 +252,7 @@
 			files = (
 				C13377B81925701C0067F20E /* MSAppDelegate.m in Sources */,
 				C13377B41925701C0067F20E /* main.m in Sources */,
+				C13377DA192574530067F20E /* MSCamViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,6 +289,14 @@
 				C13377CA1925701C0067F20E /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		C133781C1925765B0067F20E /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C133781D1925765B0067F20E /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -440,6 +459,7 @@
 				C13377D21925701C0067F20E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C13377D31925701C0067F20E /* Build configuration list for PBXNativeTarget "MrSelfieTests" */ = {
 			isa = XCConfigurationList;
@@ -448,6 +468,7 @@
 				C13377D51925701C0067F20E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

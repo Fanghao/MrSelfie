@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BDFD6D921925774E00D74AEF /* MSPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDFD6D911925774E00D74AEF /* MSPreviewViewController.m */; };
 		C13377A81925701C0067F20E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C13377A71925701C0067F20E /* Foundation.framework */; };
 		C13377AA1925701C0067F20E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C13377A91925701C0067F20E /* CoreGraphics.framework */; };
 		C13377AC1925701C0067F20E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C13377AB1925701C0067F20E /* UIKit.framework */; };
@@ -32,6 +33,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BDFD6D901925774E00D74AEF /* MSPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSPreviewViewController.h; sourceTree = "<group>"; };
+		BDFD6D911925774E00D74AEF /* MSPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSPreviewViewController.m; sourceTree = "<group>"; };
 		C13377A41925701C0067F20E /* MrSelfie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MrSelfie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C13377A71925701C0067F20E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C13377A91925701C0067F20E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -109,6 +112,8 @@
 			children = (
 				C13377B61925701C0067F20E /* MSAppDelegate.h */,
 				C13377B71925701C0067F20E /* MSAppDelegate.m */,
+				BDFD6D901925774E00D74AEF /* MSPreviewViewController.h */,
+				BDFD6D911925774E00D74AEF /* MSPreviewViewController.m */,
 				C13377B91925701C0067F20E /* Images.xcassets */,
 				C13377AE1925701C0067F20E /* Supporting Files */,
 			);
@@ -241,6 +246,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C13377B81925701C0067F20E /* MSAppDelegate.m in Sources */,
+				BDFD6D921925774E00D74AEF /* MSPreviewViewController.m in Sources */,
 				C13377B41925701C0067F20E /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -440,6 +446,7 @@
 				C13377D21925701C0067F20E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C13377D31925701C0067F20E /* Build configuration list for PBXNativeTarget "MrSelfieTests" */ = {
 			isa = XCConfigurationList;
@@ -448,6 +455,7 @@
 				C13377D51925701C0067F20E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

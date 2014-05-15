@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		BDFD6D921925774E00D74AEF /* MSPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDFD6D911925774E00D74AEF /* MSPreviewViewController.m */; };
+		BDFD6D9519257C3E00D74AEF /* MSCamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDFD6D9419257C3E00D74AEF /* MSCamViewController.m */; };
+		BDFD6D9819257C4900D74AEF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDFD6D9619257C4900D74AEF /* Main.storyboard */; };
 		C13377A81925701C0067F20E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C13377A71925701C0067F20E /* Foundation.framework */; };
 		C13377AA1925701C0067F20E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C13377A91925701C0067F20E /* CoreGraphics.framework */; };
 		C13377AC1925701C0067F20E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C13377AB1925701C0067F20E /* UIKit.framework */; };
@@ -35,6 +37,9 @@
 /* Begin PBXFileReference section */
 		BDFD6D901925774E00D74AEF /* MSPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSPreviewViewController.h; sourceTree = "<group>"; };
 		BDFD6D911925774E00D74AEF /* MSPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSPreviewViewController.m; sourceTree = "<group>"; };
+		BDFD6D9319257C3E00D74AEF /* MSCamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCamViewController.h; sourceTree = "<group>"; };
+		BDFD6D9419257C3E00D74AEF /* MSCamViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCamViewController.m; sourceTree = "<group>"; };
+		BDFD6D9719257C4900D74AEF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C13377A41925701C0067F20E /* MrSelfie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MrSelfie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C13377A71925701C0067F20E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C13377A91925701C0067F20E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -110,6 +115,9 @@
 		C13377AD1925701C0067F20E /* MrSelfie */ = {
 			isa = PBXGroup;
 			children = (
+				BDFD6D9619257C4900D74AEF /* Main.storyboard */,
+				BDFD6D9319257C3E00D74AEF /* MSCamViewController.h */,
+				BDFD6D9419257C3E00D74AEF /* MSCamViewController.m */,
 				C13377B61925701C0067F20E /* MSAppDelegate.h */,
 				C13377B71925701C0067F20E /* MSAppDelegate.m */,
 				BDFD6D901925774E00D74AEF /* MSPreviewViewController.h */,
@@ -208,6 +216,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = C133779B1925701C0067F20E;
 			productRefGroup = C13377A51925701C0067F20E /* Products */;
@@ -225,6 +234,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDFD6D9819257C4900D74AEF /* Main.storyboard in Resources */,
 				C13377B21925701C0067F20E /* InfoPlist.strings in Resources */,
 				C13377BA1925701C0067F20E /* Images.xcassets in Resources */,
 			);
@@ -245,6 +255,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDFD6D9519257C3E00D74AEF /* MSCamViewController.m in Sources */,
 				C13377B81925701C0067F20E /* MSAppDelegate.m in Sources */,
 				BDFD6D921925774E00D74AEF /* MSPreviewViewController.m in Sources */,
 				C13377B41925701C0067F20E /* main.m in Sources */,
@@ -270,6 +281,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		BDFD6D9619257C4900D74AEF /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BDFD6D9719257C4900D74AEF /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		C13377B01925701C0067F20E /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

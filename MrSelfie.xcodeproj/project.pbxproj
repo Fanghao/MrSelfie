@@ -40,6 +40,11 @@
 		C1337822192577C70067F20E /* MSCamPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = C1337821192577C70067F20E /* MSCamPreviewView.m */; };
 		C18694B119259792003B9EE7 /* button_camera_mrselfie@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C18694AF19259792003B9EE7 /* button_camera_mrselfie@2x.png */; };
 		C18694B219259792003B9EE7 /* button_share_mrselfie@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C18694B019259792003B9EE7 /* button_share_mrselfie@2x.png */; };
+		C18694B81925C064003B9EE7 /* default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C18694B51925C064003B9EE7 /* default-568h@2x.png */; };
+		C18694B91925C064003B9EE7 /* default.png in Resources */ = {isa = PBXBuildFile; fileRef = C18694B61925C064003B9EE7 /* default.png */; };
+		C18694BA1925C064003B9EE7 /* default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C18694B71925C064003B9EE7 /* default@2x.png */; };
+		C18694CC1925C285003B9EE7 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = C18694C21925C285003B9EE7 /* Icon.png */; };
+		C18694CD1925C285003B9EE7 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C18694C31925C285003B9EE7 /* Icon@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +98,11 @@
 		C1337821192577C70067F20E /* MSCamPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSCamPreviewView.m; sourceTree = "<group>"; };
 		C18694AF19259792003B9EE7 /* button_camera_mrselfie@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button_camera_mrselfie@2x.png"; path = "images/button_camera_mrselfie@2x.png"; sourceTree = "<group>"; };
 		C18694B019259792003B9EE7 /* button_share_mrselfie@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button_share_mrselfie@2x.png"; path = "images/button_share_mrselfie@2x.png"; sourceTree = "<group>"; };
+		C18694B51925C064003B9EE7 /* default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default-568h@2x.png"; sourceTree = "<group>"; };
+		C18694B61925C064003B9EE7 /* default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default.png; sourceTree = "<group>"; };
+		C18694B71925C064003B9EE7 /* default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default@2x.png"; sourceTree = "<group>"; };
+		C18694C21925C285003B9EE7 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		C18694C31925C285003B9EE7 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,8 +134,10 @@
 		BDFD6D99192589E100D74AEF /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				C18694BB1925C285003B9EE7 /* AppIcons */,
 				C18694AF19259792003B9EE7 /* button_camera_mrselfie@2x.png */,
 				C18694B019259792003B9EE7 /* button_share_mrselfie@2x.png */,
+				C18694B41925C064003B9EE7 /* LaunchImages */,
 				BDFD6D9A192589F700D74AEF /* Sample */,
 			);
 			name = Images;
@@ -232,6 +244,25 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		C18694B41925C064003B9EE7 /* LaunchImages */ = {
+			isa = PBXGroup;
+			children = (
+				C18694B51925C064003B9EE7 /* default-568h@2x.png */,
+				C18694B61925C064003B9EE7 /* default.png */,
+				C18694B71925C064003B9EE7 /* default@2x.png */,
+			);
+			path = LaunchImages;
+			sourceTree = "<group>";
+		};
+		C18694BB1925C285003B9EE7 /* AppIcons */ = {
+			isa = PBXGroup;
+			children = (
+				C18694C21925C285003B9EE7 /* Icon.png */,
+				C18694C31925C285003B9EE7 /* Icon@2x.png */,
+			);
+			path = AppIcons;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -281,7 +312,7 @@
 				ORGANIZATIONNAME = MSStorm8;
 				TargetAttributes = {
 					C13377A31925701C0067F20E = {
-						DevelopmentTeam = X77LDY7Z5E;
+						DevelopmentTeam = Y66H5H8W8W;
 					};
 					C13377BE1925701C0067F20E = {
 						TestTargetID = C13377A31925701C0067F20E;
@@ -313,6 +344,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BDFD6DB3192589F700D74AEF /* IMG_2454.jpg in Resources */,
+				C18694CD1925C285003B9EE7 /* Icon@2x.png in Resources */,
 				BDFD6DAE192589F700D74AEF /* IMG_2449.jpg in Resources */,
 				BDFD6DAC192589F700D74AEF /* IMG_2447.jpg in Resources */,
 				BDFD6DAF192589F700D74AEF /* IMG_2450.jpg in Resources */,
@@ -322,14 +354,18 @@
 				C18694B119259792003B9EE7 /* button_camera_mrselfie@2x.png in Resources */,
 				C18694B219259792003B9EE7 /* button_share_mrselfie@2x.png in Resources */,
 				BDFD6DB4192589F700D74AEF /* IMG_2455.jpg in Resources */,
+				C18694CC1925C285003B9EE7 /* Icon.png in Resources */,
 				BDFD6DB1192589F700D74AEF /* IMG_2452.jpg in Resources */,
 				BDFD6DA9192589F700D74AEF /* IMG_2444.jpg in Resources */,
 				BDFD6DA8192589F700D74AEF /* IMG_2443.jpg in Resources */,
 				BDFD6D9819257C4900D74AEF /* Main.storyboard in Resources */,
+				C18694B81925C064003B9EE7 /* default-568h@2x.png in Resources */,
 				C13377B21925701C0067F20E /* InfoPlist.strings in Resources */,
 				BDFD6DAD192589F700D74AEF /* IMG_2448.jpg in Resources */,
 				C13377BA1925701C0067F20E /* Images.xcassets in Resources */,
 				BDFD6DAB192589F700D74AEF /* IMG_2446.jpg in Resources */,
+				C18694B91925C064003B9EE7 /* default.png in Resources */,
+				C18694BA1925C064003B9EE7 /* default@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -434,7 +470,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -466,7 +502,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};

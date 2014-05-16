@@ -10,6 +10,7 @@
 #import <ImageIO/ImageIO.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 
+static NSString *const GIF_FILE_NAME = @"animated.gif";
 
 @interface MSPreviewViewController ()
 
@@ -18,6 +19,7 @@
 @property (nonatomic, strong) IBOutlet UIButton *shareButton;
 @property (nonatomic, strong) IBOutlet UIButton *retakeButton;
 @property (nonatomic) int currentIndex;
+@property (nonatomic) NSURL *fileUrl;
 
 - (IBAction)share:(id)sender;
 - (IBAction)retake:(id)sender;
@@ -69,9 +71,17 @@
 }
 
 - (IBAction)share:(id)sender {
-    NSLog(@"share...");
+    NSString *string = @"Sent from MrSelfie";
     
     // open up fb share
+    UIActivityViewController *activityViewController =
+    [[UIActivityViewController alloc] initWithActivityItems:@[string, self.fileUrl]
+                                      applicationActivities:nil];
+    [self presentViewController:activityViewController
+                                       animated:YES
+                                     completion:^{
+                                         NSLog(@"Share Done!");
+                                     }];
 }
 
 - (IBAction)retake:(id)sender {
@@ -102,7 +112,7 @@
                                       };
     
     NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:nil];
-    NSURL *fileURL = [documentsDirectoryURL URLByAppendingPathComponent:@"animated.gif"];
+    NSURL *fileURL = [documentsDirectoryURL URLByAppendingPathComponent:GIF_FILE_NAME];
     
     CGImageDestinationRef destination = CGImageDestinationCreateWithURL((__bridge CFURLRef)fileURL, kUTTypeGIF, frameCount, NULL);
     CGImageDestinationSetProperties(destination, (__bridge CFDictionaryRef)fileProperties);
@@ -127,6 +137,7 @@
     CFRelease(destination);
     
     NSLog(@"url=%@", fileURL);
+    self.fileUrl = fileURL;
 }
 
 @end

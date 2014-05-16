@@ -312,6 +312,11 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     CGContextRef context = CGBitmapContextCreate(pxdata, size.width,
                                                  size.height, 8, 4*size.width, rgbColorSpace,
                                                  kCGImageAlphaPremultipliedFirst);
+    
+    CGAffineTransform transform = CGAffineTransformMakeTranslation(size.width, 0.0);
+    transform = CGAffineTransformScale(transform, -1.0, 1.0);
+    CGContextConcatCTM(context, transform);
+    
     //kCGImageAlphaNoneSkipFirst);
     CGContextConcatCTM(context, CGAffineTransformMakeRotation(0));
     CGContextDrawImage(context, CGRectMake(0, 0, CGImageGetWidth(image),

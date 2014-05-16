@@ -10,6 +10,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <ImageIO/ImageIO.h>
 #import <MobileCoreServices/MobileCoreServices.h>
+#import <AVFoundation/AVFoundation.h>
 
 static NSString *const GIF_FILE_NAME = @"animated.gif";
 
@@ -21,6 +22,7 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
 @property (nonatomic, strong) IBOutlet UIButton *retakeButton;
 @property (nonatomic) int currentIndex;
 @property (nonatomic) NSURL *fileUrl;
+@property (nonatomic, strong) UIImage *firstImage;
 
 - (IBAction)share:(id)sender;
 - (IBAction)retake:(id)sender;
@@ -49,11 +51,13 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
 //                    [UIImage imageNamed:@"IMG_2444.jpg"],
 //                    [UIImage imageNamed:@"IMG_2443.jpg"],
 //                    ];
-
+    
+    self.firstImage = [self.photos objectAtIndex:0];
+    
     self.currentIndex = self.photos.count - 1;
     [self showNextImage];
     
-    [self createAnimatedGif];
+    [self createVideo];
 }
 
 - (void)showNextImage {
@@ -135,9 +139,169 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     }
     
     CFRelease(destination);
-//    NSLog(@"url=%@", fileURL);
+    NSLog(@"%@", fileURL);
     self.fileUrl = fileURL;
 //    [[[ALAssetsLibrary alloc] init] writeImageDataToSavedPhotosAlbum:[NSData dataWithContentsOfURL:fileURL] metadata:nil completionBlock:nil];
+}
+
+- (void)createVideo {
+    ///////////// setup OR function def if we move this to a separate function ////////////
+    // this should be moved to its own function, that can take an imageArray, videoOutputPath, etc...
+    //    - (void)exportImages:(NSMutableArray *)imageArray
+    // asVideoToPath:(NSString *)videoOutputPath
+    // withFrameSize:(CGSize)imageSize
+    // framesPerSecond:(NSUInteger)fps {
+    
+    NSError *error = nil;
+    
+    
+    // set up file manager, and file videoOutputPath, remove "test_output.mp4" if it exists...
+    //NSString *videoOutputPath = @"/Users/someuser/Desktop/test_output.mp4";
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    NSString *documentsDirectory = [NSHomeDirectory()
+                                    stringByAppendingPathComponent:@"Documents"];
+    NSString *videoOutputPath = [documentsDirectory stringByAppendingPathComponent:@"test_output.mp4"];
+    //NSLog(@"-->videoOutputPath= %@", videoOutputPath);
+    // get rid of existing mp4 if exists...
+    if ([fileMgr removeItemAtPath:videoOutputPath error:&error] != YES)
+        NSLog(@"Unable to delete file: %@", [error localizedDescription]);
+    
+    CGSize imageSize = CGSizeMake(self.firstImage.size.width, self.firstImage.size.height);
+    NSUInteger fps = 30;
+    
+    
+    
+    //////////////     end setup    ///////////////////////////////////
+    
+    NSLog(@"Start building video from defined frames.");
+    
+    AVAssetWriter *videoWriter = [[AVAssetWriter alloc] initWithURL:
+                                  [NSURL fileURLWithPath:videoOutputPath] fileType:AVFileTypeQuickTimeMovie
+                                                              error:&error];
+    NSParameterAssert(videoWriter);
+    
+    NSDictionary *videoSettings = [NSDictionary dictionaryWithObjectsAndKeys:
+                                   AVVideoCodecH264, AVVideoCodecKey,
+                                   [NSNumber numberWithInt:imageSize.width], AVVideoWidthKey,
+                                   [NSNumber numberWithInt:imageSize.height], AVVideoHeightKey,
+                                   nil];
+    
+    AVAssetWriterInput* videoWriterInput = [AVAssetWriterInput
+                                            assetWriterInputWithMediaType:AVMediaTypeVideo
+                                            outputSettings:videoSettings];
+    
+    
+    AVAssetWriterInputPixelBufferAdaptor *adaptor = [AVAssetWriterInputPixelBufferAdaptor
+                                                     assetWriterInputPixelBufferAdaptorWithAssetWriterInput:videoWriterInput
+                                                     sourcePixelBufferAttributes:nil];
+    
+    NSParameterAssert(videoWriterInput);
+    NSParameterAssert([videoWriter canAddInput:videoWriterInput]);
+    videoWriterInput.expectsMediaDataInRealTime = YES;
+    [videoWriter addInput:videoWriterInput];
+    
+    //Start a session:
+    [videoWriter startWriting];
+    [videoWriter startSessionAtSourceTime:kCMTimeZero];
+    
+    CVPixelBufferRef buffer = NULL;
+    
+    //convert uiimage to CGImage.
+    int frameCount = 0;
+    double numberOfSecondsPerFrame = 0.2;
+    double frameDuration = fps * numberOfSecondsPerFrame;
+    double finalFrameDuration = fps * 0.5f;
+    
+    //for(VideoFrame * frm in imageArray)
+    NSLog(@"**************************************************");
+    
+    for (int i=self.photos.count-1; i>0; i--)
+    {
+        UIImage *img = self.photos[i];
+        //UIImage * img = frm._imageFrame;
+        buffer = [self pixelBufferFromCGImage:[img CGImage]];
+        
+        BOOL append_ok = NO;
+        int j = 0;
+        while (!append_ok && j < 30) {
+            if (adaptor.assetWriterInput.readyForMoreMediaData)  {
+                //print out status:
+                NSLog(@"Processing video frame (%d,%d)",frameCount,[self.photos count]);
+                
+                CMTime frameTime = CMTimeMake(frameCount*frameDuration,(int32_t) fps);
+                
+                if (i == 0) {
+                    frameTime = CMTimeMake(frameCount*finalFrameDuration,(int32_t) fps);
+                }
+                
+                append_ok = [adaptor appendPixelBuffer:buffer withPresentationTime:frameTime];
+                if(!append_ok){
+                    NSError *error = videoWriter.error;
+                    if(error!=nil) {
+                        NSLog(@"Unresolved error %@,%@.", error, [error userInfo]);
+                    }
+                }
+            }
+            else {
+                printf("adaptor not ready %d, %d\n", frameCount, j);
+                [NSThread sleepForTimeInterval:0.1];
+            }
+            j++;
+        }
+        if (!append_ok) {
+            printf("error appending image %d times %d\n, with error.", frameCount, j);
+        }
+        frameCount++;
+    }
+    NSLog(@"**************************************************");
+    
+    //Finish the session:
+    [videoWriterInput markAsFinished];
+    [videoWriter finishWriting];
+    NSLog(@"Write Ended");
+    
+    self.fileUrl = [NSURL fileURLWithPath:videoOutputPath];
+    NSLog(@"%@", self.fileUrl);
+    
+}
+
+- (CVPixelBufferRef) pixelBufferFromCGImage: (CGImageRef) image {
+    
+    CGSize size = CGSizeMake(self.firstImage.size.width, self.firstImage.size.height);
+    
+    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
+                             [NSNumber numberWithBool:YES], kCVPixelBufferCGImageCompatibilityKey,
+                             [NSNumber numberWithBool:YES], kCVPixelBufferCGBitmapContextCompatibilityKey,
+                             nil];
+    CVPixelBufferRef pxbuffer = NULL;
+    
+    CVReturn status = CVPixelBufferCreate(kCFAllocatorDefault,
+                                          size.width,
+                                          size.height,
+                                          kCVPixelFormatType_32ARGB,
+                                          (__bridge CFDictionaryRef) options,
+                                          &pxbuffer);
+    if (status != kCVReturnSuccess){
+        NSLog(@"Failed to create pixel buffer");
+    }
+    
+    CVPixelBufferLockBaseAddress(pxbuffer, 0);
+    void *pxdata = CVPixelBufferGetBaseAddress(pxbuffer);
+    
+    CGColorSpaceRef rgbColorSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextRef context = CGBitmapContextCreate(pxdata, size.width,
+                                                 size.height, 8, 4*size.width, rgbColorSpace,
+                                                 kCGImageAlphaPremultipliedFirst);
+    //kCGImageAlphaNoneSkipFirst);
+    CGContextConcatCTM(context, CGAffineTransformMakeRotation(0));
+    CGContextDrawImage(context, CGRectMake(0, 0, CGImageGetWidth(image),
+                                           CGImageGetHeight(image)), image);
+    CGColorSpaceRelease(rgbColorSpace);
+    CGContextRelease(context);
+    
+    CVPixelBufferUnlockBaseAddress(pxbuffer, 0);
+    
+    return pxbuffer;
 }
 
 @end

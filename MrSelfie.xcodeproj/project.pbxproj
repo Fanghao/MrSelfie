@@ -25,6 +25,7 @@
 		BDFD6DB4192589F700D74AEF /* IMG_2455.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BDFD6DA7192589F700D74AEF /* IMG_2455.jpg */; };
 		BDFD6DB619258FCE00D74AEF /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFD6DB519258FCE00D74AEF /* ImageIO.framework */; };
 		BDFD6DB819258FD500D74AEF /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFD6DB719258FD500D74AEF /* MobileCoreServices.framework */; };
+		BDFD6DBA1925B1E000D74AEF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFD6DB91925B1E000D74AEF /* AVFoundation.framework */; };
 		C13377A81925701C0067F20E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C13377A71925701C0067F20E /* Foundation.framework */; };
 		C13377AA1925701C0067F20E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C13377A91925701C0067F20E /* CoreGraphics.framework */; };
 		C13377AC1925701C0067F20E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C13377AB1925701C0067F20E /* UIKit.framework */; };
@@ -78,6 +79,7 @@
 		BDFD6DA7192589F700D74AEF /* IMG_2455.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = IMG_2455.jpg; sourceTree = "<group>"; };
 		BDFD6DB519258FCE00D74AEF /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		BDFD6DB719258FD500D74AEF /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		BDFD6DB91925B1E000D74AEF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		C13377A41925701C0067F20E /* MrSelfie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MrSelfie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C13377A71925701C0067F20E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C13377A91925701C0067F20E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -110,6 +112,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDFD6DBA1925B1E000D74AEF /* AVFoundation.framework in Frameworks */,
 				BDFD6DB819258FD500D74AEF /* MobileCoreServices.framework in Frameworks */,
 				BDFD6DB619258FCE00D74AEF /* ImageIO.framework in Frameworks */,
 				C13377AA1925701C0067F20E /* CoreGraphics.framework in Frameworks */,
@@ -186,6 +189,7 @@
 		C13377A61925701C0067F20E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BDFD6DB91925B1E000D74AEF /* AVFoundation.framework */,
 				BDFD6DB719258FD500D74AEF /* MobileCoreServices.framework */,
 				BDFD6DB519258FCE00D74AEF /* ImageIO.framework */,
 				C13377A71925701C0067F20E /* Foundation.framework */,

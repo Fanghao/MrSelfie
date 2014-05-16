@@ -12,8 +12,8 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
-#define ImageCapacity 10
-#define SnapInterval 0.5
+#define ImageCapacity 20
+#define SnapInterval 0.3
 
 static void * CapturingStillImageContext = &CapturingStillImageContext;
 static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDeviceAuthorizedContext;

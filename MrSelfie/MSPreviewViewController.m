@@ -23,6 +23,7 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
 @property (nonatomic) int currentIndex;
 @property (nonatomic) NSURL *fileUrl;
 @property (nonatomic, strong) UIImage *firstImage;
+@property (nonatomic, strong) AVAssetWriter *videoWriter;
 
 - (IBAction)share:(id)sender;
 - (IBAction)retake:(id)sender;
@@ -56,7 +57,7 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     
     NSMutableArray *arr = [NSMutableArray array];
     
-    for (int i=0; i<25; i++) {
+    for (int i=0; i<15; i++) {
         [arr addObject:self.firstImage];
     }
     
@@ -156,7 +157,12 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
 //    [[[ALAssetsLibrary alloc] init] writeImageDataToSavedPhotosAlbum:[NSData dataWithContentsOfURL:fileURL] metadata:nil completionBlock:nil];
 }
 
+
+
+
+
 - (void)createVideo {
+    
     ///////////// setup OR function def if we move this to a separate function ////////////
     // this should be moved to its own function, that can take an imageArray, videoOutputPath, etc...
     //    - (void)exportImages:(NSMutableArray *)imageArray
@@ -179,7 +185,7 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
         NSLog(@"Unable to delete file: %@", [error localizedDescription]);
     
     CGSize imageSize = CGSizeMake(self.firstImage.size.width, self.firstImage.size.height);
-    NSUInteger fps = 30;
+    NSUInteger fps = 15;
     
     
     
@@ -187,10 +193,10 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     
     NSLog(@"Start building video from defined frames.");
     
-    AVAssetWriter *videoWriter = [[AVAssetWriter alloc] initWithURL:
+    self.videoWriter = [[AVAssetWriter alloc] initWithURL:
                                   [NSURL fileURLWithPath:videoOutputPath] fileType:AVFileTypeQuickTimeMovie
                                                               error:&error];
-    NSParameterAssert(videoWriter);
+    NSParameterAssert(self.videoWriter);
     
     NSDictionary *videoSettings = [NSDictionary dictionaryWithObjectsAndKeys:
                                    AVVideoCodecH264, AVVideoCodecKey,
@@ -208,13 +214,13 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
                                                      sourcePixelBufferAttributes:nil];
     
     NSParameterAssert(videoWriterInput);
-    NSParameterAssert([videoWriter canAddInput:videoWriterInput]);
+    NSParameterAssert([self.videoWriter canAddInput:videoWriterInput]);
     videoWriterInput.expectsMediaDataInRealTime = YES;
-    [videoWriter addInput:videoWriterInput];
+    [self.videoWriter addInput:videoWriterInput];
     
     //Start a session:
-    [videoWriter startWriting];
-    [videoWriter startSessionAtSourceTime:kCMTimeZero];
+    [self.videoWriter startWriting];
+    [self.videoWriter startSessionAtSourceTime:kCMTimeZero];
     
     CVPixelBufferRef buffer = NULL;
     
@@ -230,6 +236,10 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     {
         UIImage *img = self.photos[i];
         //UIImage * img = frm._imageFrame;
+        if (buffer) {
+            CVBufferRelease(buffer);
+        }
+        
         buffer = [self pixelBufferFromCGImage:[img CGImage]];
         
         BOOL append_ok = NO;
@@ -243,7 +253,7 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
                     
                 append_ok = [adaptor appendPixelBuffer:buffer withPresentationTime:frameTime];
                 if(!append_ok){
-                    NSError *error = videoWriter.error;
+                    NSError *error = self.videoWriter.error;
                     if(error!=nil) {
                         NSLog(@"Unresolved error %@,%@.", error, [error userInfo]);
                     }
@@ -264,7 +274,10 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     
     //Finish the session:
     [videoWriterInput markAsFinished];
-    [videoWriter finishWriting];
+    [self.videoWriter finishWritingWithCompletionHandler:^(void) {
+        CVBufferRelease(buffer);
+        self.videoWriter = nil;
+    }];
     NSLog(@"Write Ended");
     
     self.fileUrl = [NSURL fileURLWithPath:videoOutputPath];
@@ -273,7 +286,6 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
 }
 
 - (CVPixelBufferRef) pixelBufferFromCGImage: (CGImageRef) image {
-    
     CGSize size = CGSizeMake(self.firstImage.size.width, self.firstImage.size.height);
     
     NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -288,6 +300,7 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
                                           kCVPixelFormatType_32ARGB,
                                           (__bridge CFDictionaryRef) options,
                                           &pxbuffer);
+    
     if (status != kCVReturnSuccess){
         NSLog(@"Failed to create pixel buffer");
     }

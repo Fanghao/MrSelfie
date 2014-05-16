@@ -89,7 +89,7 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
 }
 
 - (IBAction)share:(id)sender {
-    NSString *string = @"Sent from MrSelfie";
+    NSString *string = @"Taken with Shots";
     
     // open up fb share
     UIActivityViewController *activityViewController =

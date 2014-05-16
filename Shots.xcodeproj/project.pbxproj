@@ -80,20 +80,20 @@
 		BDFD6DB519258FCE00D74AEF /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		BDFD6DB719258FD500D74AEF /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		BDFD6DB91925B1E000D74AEF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		C13377A41925701C0067F20E /* MrSelfie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MrSelfie.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C13377A41925701C0067F20E /* Shots.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shots.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C13377A71925701C0067F20E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C13377A91925701C0067F20E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		C13377AB1925701C0067F20E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		C13377AF1925701C0067F20E /* MrSelfie-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MrSelfie-Info.plist"; sourceTree = "<group>"; };
+		C13377AF1925701C0067F20E /* Shots-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Shots-Info.plist"; sourceTree = "<group>"; };
 		C13377B11925701C0067F20E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C13377B31925701C0067F20E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		C13377B51925701C0067F20E /* MrSelfie-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MrSelfie-Prefix.pch"; sourceTree = "<group>"; };
+		C13377B51925701C0067F20E /* Shots-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Shots-Prefix.pch"; sourceTree = "<group>"; };
 		C13377B61925701C0067F20E /* MSAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MSAppDelegate.h; sourceTree = "<group>"; };
 		C13377B71925701C0067F20E /* MSAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MSAppDelegate.m; sourceTree = "<group>"; };
 		C13377B91925701C0067F20E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		C13377BF1925701C0067F20E /* MrSelfieTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MrSelfieTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C13377BF1925701C0067F20E /* ShotsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShotsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C13377C01925701C0067F20E /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		C13377C81925701C0067F20E /* MrSelfieTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "MrSelfieTests-Info.plist"; sourceTree = "<group>"; };
+		C13377C81925701C0067F20E /* ShotsTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ShotsTests-Info.plist"; sourceTree = "<group>"; };
 		C13377CA1925701C0067F20E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C13377CC1925701C0067F20E /* MrSelfieTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MrSelfieTests.m; sourceTree = "<group>"; };
 		C1337820192577C70067F20E /* MSCamPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCamPreviewView.h; sourceTree = "<group>"; };
@@ -180,8 +180,8 @@
 		C13377A51925701C0067F20E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C13377A41925701C0067F20E /* MrSelfie.app */,
-				C13377BF1925701C0067F20E /* MrSelfieTests.xctest */,
+				C13377A41925701C0067F20E /* Shots.app */,
+				C13377BF1925701C0067F20E /* ShotsTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -222,10 +222,10 @@
 		C13377AE1925701C0067F20E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				C13377AF1925701C0067F20E /* MrSelfie-Info.plist */,
+				C13377AF1925701C0067F20E /* Shots-Info.plist */,
 				C13377B01925701C0067F20E /* InfoPlist.strings */,
 				C13377B31925701C0067F20E /* main.m */,
-				C13377B51925701C0067F20E /* MrSelfie-Prefix.pch */,
+				C13377B51925701C0067F20E /* Shots-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -242,7 +242,7 @@
 		C13377C71925701C0067F20E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				C13377C81925701C0067F20E /* MrSelfieTests-Info.plist */,
+				C13377C81925701C0067F20E /* ShotsTests-Info.plist */,
 				C13377C91925701C0067F20E /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -270,9 +270,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C13377A31925701C0067F20E /* MrSelfie */ = {
+		C13377A31925701C0067F20E /* Shots */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C13377D01925701C0067F20E /* Build configuration list for PBXNativeTarget "MrSelfie" */;
+			buildConfigurationList = C13377D01925701C0067F20E /* Build configuration list for PBXNativeTarget "Shots" */;
 			buildPhases = (
 				C13377A01925701C0067F20E /* Sources */,
 				C13377A11925701C0067F20E /* Frameworks */,
@@ -282,14 +282,14 @@
 			);
 			dependencies = (
 			);
-			name = MrSelfie;
+			name = Shots;
 			productName = MrSelfie;
-			productReference = C13377A41925701C0067F20E /* MrSelfie.app */;
+			productReference = C13377A41925701C0067F20E /* Shots.app */;
 			productType = "com.apple.product-type.application";
 		};
-		C13377BE1925701C0067F20E /* MrSelfieTests */ = {
+		C13377BE1925701C0067F20E /* ShotsTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C13377D31925701C0067F20E /* Build configuration list for PBXNativeTarget "MrSelfieTests" */;
+			buildConfigurationList = C13377D31925701C0067F20E /* Build configuration list for PBXNativeTarget "ShotsTests" */;
 			buildPhases = (
 				C13377BB1925701C0067F20E /* Sources */,
 				C13377BC1925701C0067F20E /* Frameworks */,
@@ -300,9 +300,9 @@
 			dependencies = (
 				C13377C51925701C0067F20E /* PBXTargetDependency */,
 			);
-			name = MrSelfieTests;
+			name = ShotsTests;
 			productName = MrSelfieTests;
-			productReference = C13377BF1925701C0067F20E /* MrSelfieTests.xctest */;
+			productReference = C13377BF1925701C0067F20E /* ShotsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -323,7 +323,7 @@
 					};
 				};
 			};
-			buildConfigurationList = C133779F1925701C0067F20E /* Build configuration list for PBXProject "MrSelfie" */;
+			buildConfigurationList = C133779F1925701C0067F20E /* Build configuration list for PBXProject "Shots" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -336,8 +336,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C13377A31925701C0067F20E /* MrSelfie */,
-				C13377BE1925701C0067F20E /* MrSelfieTests */,
+				C13377A31925701C0067F20E /* Shots */,
+				C13377BE1925701C0067F20E /* ShotsTests */,
 			);
 		};
 /* End PBXProject section */
@@ -409,7 +409,7 @@
 /* Begin PBXTargetDependency section */
 		C13377C51925701C0067F20E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = C13377A31925701C0067F20E /* MrSelfie */;
+			target = C13377A31925701C0067F20E /* Shots */;
 			targetProxy = C13377C41925701C0067F20E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -520,10 +520,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "MrSelfie/MrSelfie-Prefix.pch";
-				INFOPLIST_FILE = "MrSelfie/MrSelfie-Info.plist";
+				GCC_PREFIX_HEADER = "MrSelfie/Shots-Prefix.pch";
+				INFOPLIST_FILE = "MrSelfie/Shots-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Shots;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -537,10 +537,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "MrSelfie/MrSelfie-Prefix.pch";
-				INFOPLIST_FILE = "MrSelfie/MrSelfie-Info.plist";
+				GCC_PREFIX_HEADER = "MrSelfie/Shots-Prefix.pch";
+				INFOPLIST_FILE = "MrSelfie/Shots-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Shots;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -561,8 +561,8 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = "MrSelfieTests/MrSelfieTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "MrSelfieTests/ShotsTests-Info.plist";
+				PRODUCT_NAME = ShotsTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -579,8 +579,8 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MrSelfie/MrSelfie-Prefix.pch";
-				INFOPLIST_FILE = "MrSelfieTests/MrSelfieTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "MrSelfieTests/ShotsTests-Info.plist";
+				PRODUCT_NAME = ShotsTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -589,7 +589,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C133779F1925701C0067F20E /* Build configuration list for PBXProject "MrSelfie" */ = {
+		C133779F1925701C0067F20E /* Build configuration list for PBXProject "Shots" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C13377CE1925701C0067F20E /* Debug */,
@@ -598,7 +598,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C13377D01925701C0067F20E /* Build configuration list for PBXNativeTarget "MrSelfie" */ = {
+		C13377D01925701C0067F20E /* Build configuration list for PBXNativeTarget "Shots" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C13377D11925701C0067F20E /* Debug */,
@@ -607,7 +607,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C13377D31925701C0067F20E /* Build configuration list for PBXNativeTarget "MrSelfieTests" */ = {
+		C13377D31925701C0067F20E /* Build configuration list for PBXNativeTarget "ShotsTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C13377D41925701C0067F20E /* Debug */,

@@ -163,125 +163,130 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
 
 - (void)createVideo {
     
-    ///////////// setup OR function def if we move this to a separate function ////////////
-    // this should be moved to its own function, that can take an imageArray, videoOutputPath, etc...
-    //    - (void)exportImages:(NSMutableArray *)imageArray
-    // asVideoToPath:(NSString *)videoOutputPath
-    // withFrameSize:(CGSize)imageSize
-    // framesPerSecond:(NSUInteger)fps {
-    
-    NSError *error = nil;
-    
-    
-    // set up file manager, and file videoOutputPath, remove "test_output.mp4" if it exists...
-    //NSString *videoOutputPath = @"/Users/someuser/Desktop/test_output.mp4";
-    NSFileManager *fileMgr = [NSFileManager defaultManager];
-    NSString *documentsDirectory = [NSHomeDirectory()
-                                    stringByAppendingPathComponent:@"Documents"];
-    NSString *videoOutputPath = [documentsDirectory stringByAppendingPathComponent:@"selfie.mp4"];
-    //NSLog(@"-->videoOutputPath= %@", videoOutputPath);
-    // get rid of existing mp4 if exists...
-    if ([fileMgr removeItemAtPath:videoOutputPath error:&error] != YES)
-        NSLog(@"Unable to delete file: %@", [error localizedDescription]);
-    
-    CGSize imageSize = CGSizeMake(self.firstImage.size.width, self.firstImage.size.height);
-    NSUInteger fps = 15;
-    
-    
-    
-    //////////////     end setup    ///////////////////////////////////
-    
-    NSLog(@"Start building video from defined frames.");
-    
-    self.videoWriter = [[AVAssetWriter alloc] initWithURL:
-                                  [NSURL fileURLWithPath:videoOutputPath] fileType:AVFileTypeQuickTimeMovie
-                                                              error:&error];
-    NSParameterAssert(self.videoWriter);
-    
-    NSDictionary *videoSettings = [NSDictionary dictionaryWithObjectsAndKeys:
-                                   AVVideoCodecH264, AVVideoCodecKey,
-                                   [NSNumber numberWithInt:imageSize.width], AVVideoWidthKey,
-                                   [NSNumber numberWithInt:imageSize.height], AVVideoHeightKey,
-                                   nil];
-    
-    AVAssetWriterInput* videoWriterInput = [AVAssetWriterInput
-                                            assetWriterInputWithMediaType:AVMediaTypeVideo
-                                            outputSettings:videoSettings];
-    
-    
-    AVAssetWriterInputPixelBufferAdaptor *adaptor = [AVAssetWriterInputPixelBufferAdaptor
-                                                     assetWriterInputPixelBufferAdaptorWithAssetWriterInput:videoWriterInput
-                                                     sourcePixelBufferAttributes:nil];
-    
-    NSParameterAssert(videoWriterInput);
-    NSParameterAssert([self.videoWriter canAddInput:videoWriterInput]);
-    videoWriterInput.expectsMediaDataInRealTime = YES;
-    [self.videoWriter addInput:videoWriterInput];
-    
-    //Start a session:
-    [self.videoWriter startWriting];
-    [self.videoWriter startSessionAtSourceTime:kCMTimeZero];
-    
-    CVPixelBufferRef buffer = NULL;
-    
-    //convert uiimage to CGImage.
-    int frameCount = 0;
-    double numberOfSecondsPerFrame = 0.2;
-    double frameDuration = fps * numberOfSecondsPerFrame;
-    
-    //for(VideoFrame * frm in imageArray)
-    NSLog(@"**************************************************");
-    
-    for (int i=self.photos.count-1; i>=0; i--)
-    {
-        UIImage *img = self.photos[i];
-        //UIImage * img = frm._imageFrame;
-        if (buffer) {
-            CVBufferRelease(buffer);
-        }
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+        //Background Thread
         
-        buffer = [self pixelBufferFromCGImage:[img CGImage]];
+        ///////////// setup OR function def if we move this to a separate function ////////////
+        // this should be moved to its own function, that can take an imageArray, videoOutputPath, etc...
+        //    - (void)exportImages:(NSMutableArray *)imageArray
+        // asVideoToPath:(NSString *)videoOutputPath
+        // withFrameSize:(CGSize)imageSize
+        // framesPerSecond:(NSUInteger)fps {
         
-        BOOL append_ok = NO;
-        int j = 0;
-        while (!append_ok && j < 30) {
-            if (adaptor.assetWriterInput.readyForMoreMediaData)  {
-                //print out status:
-                NSLog(@"Processing video frame (%d,%d)",frameCount,(int)[self.photos count]);
+        NSError *error = nil;
+        
+        
+        // set up file manager, and file videoOutputPath, remove "test_output.mp4" if it exists...
+        //NSString *videoOutputPath = @"/Users/someuser/Desktop/test_output.mp4";
+        NSFileManager *fileMgr = [NSFileManager defaultManager];
+        NSString *documentsDirectory = [NSHomeDirectory()
+                                        stringByAppendingPathComponent:@"Documents"];
+        NSString *videoOutputPath = [documentsDirectory stringByAppendingPathComponent:@"selfie.mp4"];
+        //NSLog(@"-->videoOutputPath= %@", videoOutputPath);
+        // get rid of existing mp4 if exists...
+        if ([fileMgr removeItemAtPath:videoOutputPath error:&error] != YES)
+            NSLog(@"Unable to delete file: %@", [error localizedDescription]);
+        
+        CGSize imageSize = CGSizeMake(self.firstImage.size.width, self.firstImage.size.height);
+        NSUInteger fps = 15;
+        
+        
+        
+        //////////////     end setup    ///////////////////////////////////
+        
+        NSLog(@"Start building video from defined frames.");
+        
+        self.videoWriter = [[AVAssetWriter alloc] initWithURL:
+                            [NSURL fileURLWithPath:videoOutputPath] fileType:AVFileTypeQuickTimeMovie
+                                                        error:&error];
+        NSParameterAssert(self.videoWriter);
+        
+        NSDictionary *videoSettings = [NSDictionary dictionaryWithObjectsAndKeys:
+                                       AVVideoCodecH264, AVVideoCodecKey,
+                                       [NSNumber numberWithInt:imageSize.width], AVVideoWidthKey,
+                                       [NSNumber numberWithInt:imageSize.height], AVVideoHeightKey,
+                                       nil];
+        
+        AVAssetWriterInput* videoWriterInput = [AVAssetWriterInput
+                                                assetWriterInputWithMediaType:AVMediaTypeVideo
+                                                outputSettings:videoSettings];
+        
+        
+        AVAssetWriterInputPixelBufferAdaptor *adaptor = [AVAssetWriterInputPixelBufferAdaptor
+                                                         assetWriterInputPixelBufferAdaptorWithAssetWriterInput:videoWriterInput
+                                                         sourcePixelBufferAttributes:nil];
+        
+        NSParameterAssert(videoWriterInput);
+        NSParameterAssert([self.videoWriter canAddInput:videoWriterInput]);
+        videoWriterInput.expectsMediaDataInRealTime = YES;
+        [self.videoWriter addInput:videoWriterInput];
+        
+        //Start a session:
+        [self.videoWriter startWriting];
+        [self.videoWriter startSessionAtSourceTime:kCMTimeZero];
+        
+        CVPixelBufferRef buffer = NULL;
+        
+        //convert uiimage to CGImage.
+        int frameCount = 0;
+        double numberOfSecondsPerFrame = 0.2;
+        double frameDuration = fps * numberOfSecondsPerFrame;
+        
+        //for(VideoFrame * frm in imageArray)
+        NSLog(@"**************************************************");
+        
+        for (int i=self.photos.count-1; i>=0; i--)
+        {
+            UIImage *img = self.photos[i];
+            //UIImage * img = frm._imageFrame;
+            if (buffer) {
+                CVBufferRelease(buffer);
+            }
+            
+            buffer = [self pixelBufferFromCGImage:[img CGImage]];
+            
+            BOOL append_ok = NO;
+            int j = 0;
+            while (!append_ok && j < 30) {
+                if (adaptor.assetWriterInput.readyForMoreMediaData)  {
+                    //print out status:
+                    NSLog(@"Processing video frame (%d,%d)",frameCount,(int)[self.photos count]);
                     
-                CMTime frameTime = CMTimeMake(frameCount*frameDuration,(int32_t) fps);
+                    CMTime frameTime = CMTimeMake(frameCount*frameDuration,(int32_t) fps);
                     
-                append_ok = [adaptor appendPixelBuffer:buffer withPresentationTime:frameTime];
-                if(!append_ok){
-                    NSError *error = self.videoWriter.error;
-                    if(error!=nil) {
-                        NSLog(@"Unresolved error %@,%@.", error, [error userInfo]);
+                    append_ok = [adaptor appendPixelBuffer:buffer withPresentationTime:frameTime];
+                    if(!append_ok){
+                        NSError *error = self.videoWriter.error;
+                        if(error!=nil) {
+                            NSLog(@"Unresolved error %@,%@.", error, [error userInfo]);
+                        }
                     }
                 }
+                else {
+                    printf("adaptor not ready %d, %d\n", frameCount, j);
+                    [NSThread sleepForTimeInterval:0.1];
+                }
+                j++;
             }
-            else {
-                printf("adaptor not ready %d, %d\n", frameCount, j);
-                [NSThread sleepForTimeInterval:0.1];
+            if (!append_ok) {
+                printf("error appending image %d times %d\n, with error.", frameCount, j);
             }
-            j++;
+            frameCount++;
         }
-        if (!append_ok) {
-            printf("error appending image %d times %d\n, with error.", frameCount, j);
-        }
-        frameCount++;
-    }
-    NSLog(@"**************************************************");
+        NSLog(@"**************************************************");
+        
+        //Finish the session:
+        [videoWriterInput markAsFinished];
+        [self.videoWriter finishWritingWithCompletionHandler:^(void) {
+            CVBufferRelease(buffer);
+            self.videoWriter = nil;
+        }];
+        NSLog(@"Write Ended");
+        
+        self.fileUrl = [NSURL fileURLWithPath:videoOutputPath];
+        NSLog(@"%@", self.fileUrl);
+    });
     
-    //Finish the session:
-    [videoWriterInput markAsFinished];
-    [self.videoWriter finishWritingWithCompletionHandler:^(void) {
-        CVBufferRelease(buffer);
-        self.videoWriter = nil;
-    }];
-    NSLog(@"Write Ended");
-    
-    self.fileUrl = [NSURL fileURLWithPath:videoOutputPath];
-    NSLog(@"%@", self.fileUrl);
     
 }
 

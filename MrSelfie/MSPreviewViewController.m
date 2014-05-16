@@ -7,6 +7,7 @@
 //
 
 #import "MSPreviewViewController.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 #import <ImageIO/ImageIO.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 
@@ -126,6 +127,7 @@
     CFRelease(destination);
     
     NSLog(@"url=%@", fileURL);
+    [[[ALAssetsLibrary alloc] init] writeImageDataToSavedPhotosAlbum:[NSData dataWithContentsOfURL:fileURL] metadata:nil completionBlock:nil];
 }
 
 @end

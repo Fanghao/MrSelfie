@@ -103,8 +103,9 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
 }
 
 - (IBAction)retake:(id)sender {
+    __weak __typeof(self) weakSelf = self;
     [self dismissViewControllerAnimated:NO completion:^(void){
-        
+        weakSelf.photos = nil;
     }];
 }
 

@@ -61,6 +61,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 	[super viewDidLoad];
     
     self.navigationController.navigationBar.hidden = YES;
+    self.imageArrays = [NSMutableArray arrayWithCapacity:ImageCapacity];
 	
 	// Create the AVCaptureSession
 	AVCaptureSession *session = [[AVCaptureSession alloc] init];
@@ -135,8 +136,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    self.imageArrays = [NSMutableArray arrayWithCapacity:ImageCapacity];
-    [self startTimer];
+    [self performSelector:@selector(startTimer) withObject:nil afterDelay:SnapInterval];
     self.isUserTapped = NO;
     [[(AVCaptureVideoPreviewLayer *)[[self previewView] layer] connection] setVideoOrientation:(AVCaptureVideoOrientation)[self interfaceOrientation]];
     
@@ -320,7 +320,10 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
                         [self.imageArrays replaceObjectAtIndex:i withObject:orientedImage];
                     }
                     [previewVC setPhotos:self.imageArrays];
-                    [self.navigationController presentViewController:previewVC animated:NO completion:nil];
+                    __weak __typeof(self) weakSelf = self;
+                    [self.navigationController presentViewController:previewVC animated:NO completion:^{
+                        [weakSelf.imageArrays removeAllObjects];
+                    }];
                 }
 //                // TODO: remove
 //				[[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:nil];

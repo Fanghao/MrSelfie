@@ -137,7 +137,7 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     CFRelease(destination);
 //    NSLog(@"url=%@", fileURL);
     self.fileUrl = fileURL;
-    [[[ALAssetsLibrary alloc] init] writeImageDataToSavedPhotosAlbum:[NSData dataWithContentsOfURL:fileURL] metadata:nil completionBlock:nil];
+//    [[[ALAssetsLibrary alloc] init] writeImageDataToSavedPhotosAlbum:[NSData dataWithContentsOfURL:fileURL] metadata:nil completionBlock:nil];
 }
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "MSPreviewViewController.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 #import <ImageIO/ImageIO.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 
@@ -118,7 +119,6 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     CGImageDestinationSetProperties(destination, (__bridge CFDictionaryRef)fileProperties);
     
     for (int i = self.photos.count - 1; i >= 0; i--) {
-        NSLog(@"%d %d", i, self.photos.count);
         @autoreleasepool {
             UIImage *image = [self.photos objectAtIndex:i];
             
@@ -135,9 +135,9 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     }
     
     CFRelease(destination);
-    
-    NSLog(@"url=%@", fileURL);
+//    NSLog(@"url=%@", fileURL);
     self.fileUrl = fileURL;
+    [[[ALAssetsLibrary alloc] init] writeImageDataToSavedPhotosAlbum:[NSData dataWithContentsOfURL:fileURL] metadata:nil completionBlock:nil];
 }
 
 @end

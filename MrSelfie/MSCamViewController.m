@@ -13,7 +13,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 
 #define ImageCapacity 10
-#define SnapInterval 1
+#define SnapInterval 0.5
 
 static void * CapturingStillImageContext = &CapturingStillImageContext;
 static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDeviceAuthorizedContext;
@@ -121,19 +121,12 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 			[session addInput:audioDeviceInput];
 		}
 		
-		AVCaptureMovieFileOutput *movieFileOutput = [[AVCaptureMovieFileOutput alloc] init];
-		if ([session canAddOutput:movieFileOutput])
-		{
-			[session addOutput:movieFileOutput];
-			AVCaptureConnection *connection = [movieFileOutput connectionWithMediaType:AVMediaTypeVideo];
-			if ([connection isVideoStabilizationSupported])
-				[connection setEnablesVideoStabilizationWhenAvailable:YES];
-			[self setMovieFileOutput:movieFileOutput];
-		}
-		
 		AVCaptureStillImageOutput *stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
 		if ([session canAddOutput:stillImageOutput])
 		{
+            if (stillImageOutput.stillImageStabilizationSupported) {
+                stillImageOutput.automaticallyEnablesStillImageStabilizationWhenAvailable = YES;
+            }
 			[stillImageOutput setOutputSettings:@{AVVideoCodecKey : AVVideoCodecJPEG}];
 			[session addOutput:stillImageOutput];
 			[self setStillImageOutput:stillImageOutput];
@@ -311,7 +304,9 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 			{
 				NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
 				UIImage *image = [[UIImage alloc] initWithData:imageData];
-                [self.imageArrays insertObject:image atIndex:0];
+                UIImage *flippedImage = [UIImage imageWithCGImage:image.CGImage
+                                                            scale:image.scale orientation:UIImageOrientationLeftMirrored];
+                [self.imageArrays insertObject:flippedImage atIndex:0];
                 if (self.imageArrays.count > ImageCapacity) {
                     [self.imageArrays removeLastObject];
                 }
@@ -319,7 +314,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
                 if (self.isUserTapped) {
                     MSPreviewViewController *previewVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MSPreviewViewController"];
                     [previewVC setPhotos:self.imageArrays];
-                    [self.navigationController presentViewController:previewVC animated:YES completion:nil];
+                    [self.navigationController presentViewController:previewVC animated:NO completion:nil];
                 }
 //                // TODO: remove
 //				[[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:nil];
@@ -336,32 +331,6 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 - (void)subjectAreaDidChange:(NSNotification *)notification {
 	CGPoint devicePoint = CGPointMake(.5, .5);
 	[self focusWithMode:AVCaptureFocusModeContinuousAutoFocus exposeWithMode:AVCaptureExposureModeContinuousAutoExposure atDevicePoint:devicePoint monitorSubjectAreaChange:NO];
-}
-
-#pragma mark File Output Delegate
-
-- (void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error {
-	if (error) {
-		NSLog(@"%@", error);
-    }
-	
-	[self setLockInterfaceRotation:NO];
-	
-	// Note the backgroundRecordingID for use in the ALAssetsLibrary completion handler to end the background task associated with this recording. This allows a new recording to be started, associated with a new UIBackgroundTaskIdentifier, once the movie file output's -isRecording is back to NO — which happens sometime after this method returns.
-	UIBackgroundTaskIdentifier backgroundRecordingID = [self backgroundRecordingID];
-	[self setBackgroundRecordingID:UIBackgroundTaskInvalid];
-	
-	[[[ALAssetsLibrary alloc] init] writeVideoAtPathToSavedPhotosAlbum:outputFileURL completionBlock:^(NSURL *assetURL, NSError *error) {
-		if (error) {
-			NSLog(@"%@", error);
-        }
-		
-		[[NSFileManager defaultManager] removeItemAtURL:outputFileURL error:nil];
-		
-		if (backgroundRecordingID != UIBackgroundTaskInvalid) {
-			[[UIApplication sharedApplication] endBackgroundTask:backgroundRecordingID];
-        }
-	}];
 }
 
 #pragma mark Device Configuration
@@ -429,7 +398,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 - (void)runStillImageCaptureAnimation {
 	dispatch_async(dispatch_get_main_queue(), ^{
 		[[[self previewView] layer] setOpacity:0.0];
-		[UIView animateWithDuration:.25 animations:^{
+		[UIView animateWithDuration:.5 animations:^{
 			[[[self previewView] layer] setOpacity:1.0];
 		}];
 	});

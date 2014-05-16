@@ -15,5 +15,5 @@ xcuserdata
 profile
 *.moved-aside
 Pods
-*.xcodeproj/*.xcworkspace/xcuserdata
+*.xcodeproj/*.xcworkspace/xcuserdata/*
 *.xcuserstate

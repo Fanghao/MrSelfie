@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C13377A31925701C0067F20E"
-               BuildableName = "MrSelfie.app"
-               BlueprintName = "MrSelfie"
-               ReferencedContainer = "container:MrSelfie.xcodeproj">
+               BuildableName = "Shots.app"
+               BlueprintName = "Shots"
+               ReferencedContainer = "container:Shots.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -28,24 +28,14 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C13377BE1925701C0067F20E"
-               BuildableName = "MrSelfieTests.xctest"
-               BlueprintName = "MrSelfieTests"
-               ReferencedContainer = "container:MrSelfie.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C13377A31925701C0067F20E"
-            BuildableName = "MrSelfie.app"
-            BlueprintName = "MrSelfie"
-            ReferencedContainer = "container:MrSelfie.xcodeproj">
+            BuildableName = "Shots.app"
+            BlueprintName = "Shots"
+            ReferencedContainer = "container:Shots.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -62,9 +52,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C13377A31925701C0067F20E"
-            BuildableName = "MrSelfie.app"
-            BlueprintName = "MrSelfie"
-            ReferencedContainer = "container:MrSelfie.xcodeproj">
+            BuildableName = "Shots.app"
+            BlueprintName = "Shots"
+            ReferencedContainer = "container:Shots.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -80,9 +70,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C13377A31925701C0067F20E"
-            BuildableName = "MrSelfie.app"
-            BlueprintName = "MrSelfie"
-            ReferencedContainer = "container:MrSelfie.xcodeproj">
+            BuildableName = "Shots.app"
+            BlueprintName = "Shots"
+            ReferencedContainer = "container:Shots.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

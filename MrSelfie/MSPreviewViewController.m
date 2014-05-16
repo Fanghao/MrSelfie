@@ -54,6 +54,18 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     
     self.firstImage = [self.photos objectAtIndex:0];
     
+    NSMutableArray *arr = [NSMutableArray array];
+    
+    for (int i=0; i<25; i++) {
+        [arr addObject:self.firstImage];
+    }
+    
+    for (UIImage *img in self.photos) {
+        [arr addObject:img];
+    }
+    
+    self.photos = arr;
+    
     self.currentIndex = self.photos.count - 1;
     [self showNextImage];
     
@@ -210,12 +222,11 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     int frameCount = 0;
     double numberOfSecondsPerFrame = 0.2;
     double frameDuration = fps * numberOfSecondsPerFrame;
-    double finalFrameDuration = fps * 0.5f;
     
     //for(VideoFrame * frm in imageArray)
     NSLog(@"**************************************************");
     
-    for (int i=self.photos.count-1; i>0; i--)
+    for (int i=self.photos.count-1; i>=0; i--)
     {
         UIImage *img = self.photos[i];
         //UIImage * img = frm._imageFrame;
@@ -226,14 +237,10 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
         while (!append_ok && j < 30) {
             if (adaptor.assetWriterInput.readyForMoreMediaData)  {
                 //print out status:
-                NSLog(@"Processing video frame (%d,%d)",frameCount,[self.photos count]);
-                
+                NSLog(@"Processing video frame (%d,%d)",frameCount,(int)[self.photos count]);
+                    
                 CMTime frameTime = CMTimeMake(frameCount*frameDuration,(int32_t) fps);
-                
-                if (i == 0) {
-                    frameTime = CMTimeMake(frameCount*finalFrameDuration,(int32_t) fps);
-                }
-                
+                    
                 append_ok = [adaptor appendPixelBuffer:buffer withPresentationTime:frameTime];
                 if(!append_ok){
                     NSError *error = videoWriter.error;

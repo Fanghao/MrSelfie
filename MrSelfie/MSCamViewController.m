@@ -13,7 +13,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 
 #define ImageCapacity 10
-#define SnapInterval 0.5
+#define SnapInterval 1
 
 static void * CapturingStillImageContext = &CapturingStillImageContext;
 static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDeviceAuthorizedContext;
@@ -60,9 +60,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 - (void)viewDidLoad {
 	[super viewDidLoad];
     
-    self.imageArrays = [NSMutableArray arrayWithCapacity:ImageCapacity];
-    [self startTimer];
-    self.isUserTapped = NO;
+    self.navigationController.navigationBar.hidden = YES;
 	
 	// Create the AVCaptureSession
 	AVCaptureSession *session = [[AVCaptureSession alloc] init];
@@ -144,6 +142,10 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    self.imageArrays = [NSMutableArray arrayWithCapacity:ImageCapacity];
+    [self startTimer];
+    self.isUserTapped = NO;
+    
 	dispatch_async([self sessionQueue], ^{
 		[self addObserver:self forKeyPath:@"sessionRunningAndDeviceAuthorized" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:SessionRunningAndDeviceAuthorizedContext];
 		[self addObserver:self forKeyPath:@"stillImageOutput.capturingStillImage" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:CapturingStillImageContext];
@@ -310,6 +312,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 				NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
 				UIImage *image = [[UIImage alloc] initWithData:imageData];
                 [self.imageArrays insertObject:image atIndex:0];
+                NSLog(@"%@", self.imageArrays);
                 if (self.imageArrays.count > ImageCapacity) {
                     [self.imageArrays removeLastObject];
                 }
@@ -317,7 +320,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
                 if (self.isUserTapped) {
                     MSPreviewViewController *previewVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MSPreviewViewController"];
                     [previewVC setPhotos:self.imageArrays];
-                    [self presentViewController:previewVC animated:YES completion:nil];
+                    [self.navigationController presentViewController:previewVC animated:YES completion:nil];
                 }
                 // TODO: remove
 				[[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:nil];

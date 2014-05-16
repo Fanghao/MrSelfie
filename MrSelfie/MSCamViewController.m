@@ -86,7 +86,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 		
 		NSError *error = nil;
 		
-		AVCaptureDevice *videoDevice = [MSCamViewController deviceWithMediaType:AVMediaTypeVideo preferringPosition:AVCaptureDevicePositionBack];
+		AVCaptureDevice *videoDevice = [MSCamViewController deviceWithMediaType:AVMediaTypeVideo preferringPosition:AVCaptureDevicePositionFront];
 		AVCaptureDeviceInput *videoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:videoDevice error:&error];
 		
 		if (error)
@@ -312,7 +312,6 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 				NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
 				UIImage *image = [[UIImage alloc] initWithData:imageData];
                 [self.imageArrays insertObject:image atIndex:0];
-                NSLog(@"%@", self.imageArrays);
                 if (self.imageArrays.count > ImageCapacity) {
                     [self.imageArrays removeLastObject];
                 }
@@ -322,8 +321,8 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
                     [previewVC setPhotos:self.imageArrays];
                     [self.navigationController presentViewController:previewVC animated:YES completion:nil];
                 }
-                // TODO: remove
-				[[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:nil];
+//                // TODO: remove
+//				[[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:nil];
 			}
 		}];
 	});

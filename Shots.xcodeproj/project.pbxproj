@@ -268,7 +268,7 @@
 				ORGANIZATIONNAME = MSStorm8;
 				TargetAttributes = {
 					C13377A31925701C0067F20E = {
-						DevelopmentTeam = X77LDY7Z5E;
+						DevelopmentTeam = Y66H5H8W8W;
 					};
 					C13377BE1925701C0067F20E = {
 						TestTargetID = C13377A31925701C0067F20E;

@@ -172,7 +172,7 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     NSFileManager *fileMgr = [NSFileManager defaultManager];
     NSString *documentsDirectory = [NSHomeDirectory()
                                     stringByAppendingPathComponent:@"Documents"];
-    NSString *videoOutputPath = [documentsDirectory stringByAppendingPathComponent:@"test_output.mp4"];
+    NSString *videoOutputPath = [documentsDirectory stringByAppendingPathComponent:@"selfie.mp4"];
     //NSLog(@"-->videoOutputPath= %@", videoOutputPath);
     // get rid of existing mp4 if exists...
     if ([fileMgr removeItemAtPath:videoOutputPath error:&error] != YES)

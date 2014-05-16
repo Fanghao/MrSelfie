@@ -138,6 +138,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
     self.imageArrays = [NSMutableArray arrayWithCapacity:ImageCapacity];
     [self startTimer];
     self.isUserTapped = NO;
+    [[(AVCaptureVideoPreviewLayer *)[[self previewView] layer] connection] setVideoOrientation:(AVCaptureVideoOrientation)[self interfaceOrientation]];
     
 	dispatch_async([self sessionQueue], ^{
 		[self addObserver:self forKeyPath:@"sessionRunningAndDeviceAuthorized" options:(NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew) context:SessionRunningAndDeviceAuthorizedContext];

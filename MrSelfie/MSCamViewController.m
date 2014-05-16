@@ -12,7 +12,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
-#define ImageCapacity 20
+#define ImageCapacity 15
 #define SnapInterval 0.3
 
 static void * CapturingStillImageContext = &CapturingStillImageContext;
@@ -101,7 +101,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
             
 			dispatch_async(dispatch_get_main_queue(), ^{
 				// Why are we dispatching this to the main queue?
-				// Because AVCaptureVideoPreviewLayer is the backing layer for AVCamPreviewView and UIView can only be manipulated on main thread.
+				// Because AVCaptureVideoPreviewLayer is the backing layer for MSPreviewView and UIView can only be manipulated on main thread.
 				// Note: As an exception to the above rule, it is not necessary to serialize video orientation changes on the AVCaptureVideoPreviewLayer’s connection with other session manipulation.
                 
 				[[(AVCaptureVideoPreviewLayer *)[[self previewView] layer] connection] setVideoOrientation:(AVCaptureVideoOrientation)[self interfaceOrientation]];
@@ -305,14 +305,20 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 			{
 				NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
 				UIImage *image = [[UIImage alloc] initWithData:imageData];
-                UIImage *orientedImage = [self fixOrientationOfImage:image];
-                [self.imageArrays insertObject:orientedImage atIndex:0];
+                [self.imageArrays insertObject:image atIndex:0];
                 if (self.imageArrays.count > ImageCapacity) {
+                    UIImage *lastImage = [self.imageArrays lastObject];
                     [self.imageArrays removeLastObject];
+                    lastImage = nil;
                 }
                 
                 if (self.isUserTapped) {
                     MSPreviewViewController *previewVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MSPreviewViewController"];
+                    for (int i = 0; i < self.imageArrays.count; i++) {
+                        UIImage *image = (UIImage *)self.imageArrays[i];
+                        UIImage *orientedImage = [self fixOrientationOfImage:image];
+                        [self.imageArrays replaceObjectAtIndex:i withObject:orientedImage];
+                    }
                     [previewVC setPhotos:self.imageArrays];
                     [self.navigationController presentViewController:previewVC animated:NO completion:nil];
                 }
@@ -398,7 +404,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 - (void)runStillImageCaptureAnimation {
 	dispatch_async(dispatch_get_main_queue(), ^{
 		[[[self previewView] layer] setOpacity:0.0];
-		[UIView animateWithDuration:.5 animations:^{
+		[UIView animateWithDuration:1 animations:^{
 			[[[self previewView] layer] setOpacity:1.0];
 		}];
 	});
@@ -417,8 +423,8 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 		{
 			//Not granted access to mediaType
 			dispatch_async(dispatch_get_main_queue(), ^{
-				[[[UIAlertView alloc] initWithTitle:@"AVCam!"
-											message:@"AVCam doesn't have permission to use Camera, please change privacy settings"
+				[[[UIAlertView alloc] initWithTitle:@"MrSelfie!"
+											message:@"MrSelfie doesn't have permission to use Camera, please change privacy settings"
 										   delegate:self
 								  cancelButtonTitle:@"OK"
 								  otherButtonTitles:nil] show];

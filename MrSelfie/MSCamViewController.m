@@ -304,7 +304,9 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 			{
 				NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
 				UIImage *image = [[UIImage alloc] initWithData:imageData];
-                [self.imageArrays insertObject:image atIndex:0];
+                UIImage *flippedImage = [UIImage imageWithCGImage:image.CGImage
+                                                            scale:image.scale orientation:UIImageOrientationLeftMirrored];
+                [self.imageArrays insertObject:flippedImage atIndex:0];
                 if (self.imageArrays.count > ImageCapacity) {
                     [self.imageArrays removeLastObject];
                 }

@@ -109,7 +109,6 @@
     CGImageDestinationSetProperties(destination, (__bridge CFDictionaryRef)fileProperties);
     
     for (int i = self.photos.count - 1; i >= 0; i--) {
-        NSLog(@"%d %d", i, self.photos.count);
         @autoreleasepool {
             UIImage *image = [self.photos objectAtIndex:i];
             

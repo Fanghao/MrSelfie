@@ -31,24 +31,24 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    
+    
 //    self.photos = @[
-//                    [UIImage imageNamed:@"IMG_2443.jpg"],
-//                    [UIImage imageNamed:@"IMG_2444.jpg"],
-//                    [UIImage imageNamed:@"IMG_2445.jpg"],
-//                    [UIImage imageNamed:@"IMG_2446.jpg"],
-//                    [UIImage imageNamed:@"IMG_2447.jpg"],
-//                    [UIImage imageNamed:@"IMG_2448.jpg"],
-//                    [UIImage imageNamed:@"IMG_2449.jpg"],
-//                    [UIImage imageNamed:@"IMG_2450.jpg"],
-//                    [UIImage imageNamed:@"IMG_2451.jpg"],
-//                    [UIImage imageNamed:@"IMG_2452.jpg"],
-//                    [UIImage imageNamed:@"IMG_2453.jpg"],
-//                    [UIImage imageNamed:@"IMG_2454.jpg"],
 //                    [UIImage imageNamed:@"IMG_2455.jpg"],
+//                    [UIImage imageNamed:@"IMG_2454.jpg"],
+//                    [UIImage imageNamed:@"IMG_2453.jpg"],
+//                    [UIImage imageNamed:@"IMG_2452.jpg"],
+//                    [UIImage imageNamed:@"IMG_2451.jpg"],
+//                    [UIImage imageNamed:@"IMG_2450.jpg"],
+//                    [UIImage imageNamed:@"IMG_2449.jpg"],
+//                    [UIImage imageNamed:@"IMG_2448.jpg"],
+//                    [UIImage imageNamed:@"IMG_2447.jpg"],
+//                    [UIImage imageNamed:@"IMG_2446.jpg"],
+//                    [UIImage imageNamed:@"IMG_2445.jpg"],
+//                    [UIImage imageNamed:@"IMG_2444.jpg"],
+//                    [UIImage imageNamed:@"IMG_2443.jpg"],
 //                    ];
 
-    self.currentIndex = 0;
+    self.currentIndex = self.photos.count - 1;
     [self showNextImage];
     
     [self createAnimatedGif];
@@ -58,14 +58,14 @@
     [self.imageView setImage:[self.photos objectAtIndex:self.currentIndex]];
     
     // reached the end of slideshow
-    if (self.currentIndex == self.photos.count - 1) {
-        self.currentIndex = 0;
+    if (self.currentIndex == 0) {
+        self.currentIndex = self.photos.count - 1;
         [self performSelector:@selector(showNextImage) withObject:nil afterDelay:3];
         return;
     }
     
     // default case, increment and show the next image
-    self.currentIndex += 1;
+    self.currentIndex -= 1;
     [self performSelector:@selector(showNextImage) withObject:nil afterDelay:0.2];
 }
 
@@ -108,11 +108,12 @@
     CGImageDestinationRef destination = CGImageDestinationCreateWithURL((__bridge CFURLRef)fileURL, kUTTypeGIF, frameCount, NULL);
     CGImageDestinationSetProperties(destination, (__bridge CFDictionaryRef)fileProperties);
     
-    for (NSUInteger i = 0; i < frameCount; i++) {
+    for (int i = self.photos.count - 1; i >= 0; i--) {
+        NSLog(@"%d %d", i, self.photos.count);
         @autoreleasepool {
             UIImage *image = [self.photos objectAtIndex:i];
             
-            if (i == self.photos.count - 1) {
+            if (i == 0) {
                 CGImageDestinationAddImage(destination, image.CGImage, (__bridge CFDictionaryRef)finalFrameProperties);
             } else {
                 CGImageDestinationAddImage(destination, image.CGImage, (__bridge CFDictionaryRef)frameProperties);

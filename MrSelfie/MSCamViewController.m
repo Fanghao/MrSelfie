@@ -8,6 +8,7 @@
 
 #import "MSCamViewController.h"
 #import "MSCamPreviewView.h"
+#import "MSPreviewViewController.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
@@ -309,6 +310,15 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 				NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
 				UIImage *image = [[UIImage alloc] initWithData:imageData];
                 [self.imageArrays insertObject:image atIndex:0];
+                if (self.imageArrays.count > ImageCapacity) {
+                    [self.imageArrays removeLastObject];
+                }
+                
+                if (self.isUserTapped) {
+                    MSPreviewViewController *previewVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MSPreviewViewController"];
+                    [previewVC setPhotos:self.imageArrays];
+                    [self presentViewController:previewVC animated:YES completion:nil];
+                }
                 // TODO: remove
 				[[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:nil];
 			}

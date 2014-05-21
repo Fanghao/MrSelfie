@@ -53,9 +53,9 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
 
     CGFloat alpha = 0.0f;
 
-    for (int i=0; i<30; i++) {
+    for (int i=0; i<35; i++) {
 
-        if (i > 25 && i < 30) {
+        if (i > 30 && i < 35) {
             UIImage *test = [self addFlashOverlay:[self fixOrientationOfImage:self.firstImage] withAlpha:alpha];
 
             alpha += .2;
@@ -219,7 +219,7 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
 }
 
 - (void)showNextImage {
-    if (self.currentIndex > 25 && self.currentIndex < 30) {
+    if (self.currentIndex > 30 && self.currentIndex < 35) {
         UIImage *image = [self.photos objectAtIndex:self.currentIndex];
         UIImage* flippedImage = [UIImage imageWithCGImage:image.CGImage
                                                     scale:image.scale orientation:UIImageOrientationUpMirrored];

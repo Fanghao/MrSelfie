@@ -33,25 +33,16 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
 
 @implementation MSPreviewViewController
 
+#pragma mark - overwritten methods
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-//    self.photos = @[
-//                    [UIImage imageNamed:@"IMG_2455.jpg"],
-//                    [UIImage imageNamed:@"IMG_2454.jpg"],
-//                    [UIImage imageNamed:@"IMG_2453.jpg"],
-//                    [UIImage imageNamed:@"IMG_2452.jpg"],
-//                    [UIImage imageNamed:@"IMG_2451.jpg"],
-//                    [UIImage imageNamed:@"IMG_2450.jpg"],
-//                    [UIImage imageNamed:@"IMG_2449.jpg"],
-//                    [UIImage imageNamed:@"IMG_2448.jpg"],
-//                    [UIImage imageNamed:@"IMG_2447.jpg"],
-//                    [UIImage imageNamed:@"IMG_2446.jpg"],
-//                    [UIImage imageNamed:@"IMG_2445.jpg"],
-//                    [UIImage imageNamed:@"IMG_2444.jpg"],
-//                    [UIImage imageNamed:@"IMG_2443.jpg"],
-//                    ];
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
     
     self.firstImage = [self.photos objectAtIndex:0];
     
@@ -71,6 +62,16 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     [self showNextImage];
     
     [self createVideo];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self orientationChanged];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
 }
 
 - (void)showNextImage {
@@ -103,6 +104,7 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
 }
 
 - (IBAction)retake:(id)sender {
+    self.imageView.image = nil;
     __weak __typeof(self) weakSelf = self;
     [self dismissViewControllerAnimated:NO completion:^(void){
         weakSelf.photos = nil;
@@ -333,6 +335,38 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     CVPixelBufferUnlockBaseAddress(pxbuffer, 0);
     
     return pxbuffer;
+}
+
+#pragma mark - rotation
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [UIView setAnimationsEnabled:NO];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    [UIView setAnimationsEnabled:YES];
+}
+
+- (void)orientationChanged {
+    self.buttonContainerView.transform = CGAffineTransformIdentity;
+    UIDevice *device = [UIDevice currentDevice];
+    int maxLength = MAX(self.view.frame.size.width, self.view.frame.size.height);
+    int minLength = MIN(self.view.frame.size.width, self.view.frame.size.height);
+    switch (device.orientation) {
+        case UIDeviceOrientationPortrait:
+            self.buttonContainerView.frame = CGRectMake(0, maxLength - self.buttonContainerView.bounds.size.height, self.buttonContainerView.bounds.size.width, self.buttonContainerView.bounds.size.height);
+            break;
+        case UIDeviceOrientationLandscapeLeft:
+            self.buttonContainerView.transform = CGAffineTransformMakeRotation(-M_PI_2);
+            self.buttonContainerView.center = CGPointMake(maxLength - self.buttonContainerView.frame.size.width / 2, minLength / 2);
+            break;
+        case UIDeviceOrientationLandscapeRight:
+            self.buttonContainerView.transform = CGAffineTransformMakeRotation(M_PI_2);
+            self.buttonContainerView.center = CGPointMake(self.buttonContainerView.frame.size.width / 2, minLength / 2);
+            break;
+        default:
+            break;
+    }
 }
 
 @end

@@ -20,6 +20,7 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 
 @interface MSCamViewController ()
 
+@property (strong, nonatomic) IBOutlet UIView *stillButtonView;
 @property (strong, nonatomic) IBOutlet UIButton *stillButton;
 @property (strong, nonatomic) IBOutlet UIButton *cameraButton;
 @property (strong, nonatomic) IBOutlet MSCamPreviewView *previewView;
@@ -61,7 +62,13 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
     
     self.navigationController.navigationBar.hidden = YES;
     self.imageArrays = [NSMutableArray arrayWithCapacity:ImageCapacity];
-	
+    
+    [self orientationChanged];
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
+    
 	// Create the AVCaptureSession
 	AVCaptureSession *session = [[AVCaptureSession alloc] init];
 	[self setSession:session];
@@ -155,6 +162,11 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 	});
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
+}
+
 #pragma mark - timer
 
 - (void)startTimer {
@@ -170,6 +182,8 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 	return YES;
 }
 
+#pragma mark - rotation
+
 - (BOOL)shouldAutorotate {
 	// Disable autorotation of the interface when recording is in progress.
 	return ![self lockInterfaceRotation];
@@ -180,8 +194,35 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    [UIView setAnimationsEnabled:NO];
 	[[(AVCaptureVideoPreviewLayer *)[[self previewView] layer] connection] setVideoOrientation:(AVCaptureVideoOrientation)toInterfaceOrientation];
 }
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    [UIView setAnimationsEnabled:YES];
+}
+
+- (void)orientationChanged {
+    self.stillButtonView.transform = CGAffineTransformIdentity;
+    UIDevice *device = [UIDevice currentDevice];
+    switch (device.orientation) {
+        case UIDeviceOrientationPortrait:
+            self.stillButtonView.frame = CGRectMake(0, self.view.frame.size.height - self.stillButtonView.bounds.size.height, self.stillButtonView.bounds.size.width, self.stillButtonView.bounds.size.height);
+            break;
+        case UIDeviceOrientationLandscapeLeft:
+            self.stillButtonView.transform = CGAffineTransformMakeRotation(-M_PI_2);
+            self.stillButtonView.center = CGPointMake(self.view.frame.size.width - self.stillButtonView.frame.size.width / 2, self.view.frame.size.height / 2);
+            break;
+        case UIDeviceOrientationLandscapeRight:
+            self.stillButtonView.transform = CGAffineTransformMakeRotation(M_PI_2);
+            self.stillButtonView.center = CGPointMake(self.stillButtonView.frame.size.width / 2, self.view.frame.size.height / 2);
+            break;
+        default:
+            break;
+    }
+}
+
+#pragma mark - Private Methods
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 	if (context == CapturingStillImageContext)
@@ -506,6 +547,5 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
                                                 scale:img.scale orientation:UIImageOrientationUpMirrored];
     return flippedImage;
 }
-
 
 @end

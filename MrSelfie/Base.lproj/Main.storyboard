@@ -18,19 +18,21 @@
                                 <subviews>
                                     <view contentMode="scaleToFill" id="DW7-sR-5oC">
                                         <rect key="frame" x="0.0" y="478" width="320" height="90"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ruD-Sw-irU">
+                                                <rect key="frame" x="125" y="0.0" width="70" height="90"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                <state key="normal" image="button_camera_mrselfie.png">
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="stillButtonPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="KgN-Oj-xuO"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ruD-Sw-irU">
-                                        <rect key="frame" x="125" y="478" width="70" height="90"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                        <state key="normal" image="button_camera_mrselfie.png">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="stillButtonPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="KgN-Oj-xuO"/>
-                                        </connections>
-                                    </button>
                                     <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="gvT-AD-CHh">
                                         <rect key="frame" x="233" y="14" width="67" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
@@ -52,6 +54,7 @@
                         <outlet property="cameraButton" destination="gvT-AD-CHh" id="f9W-HJ-oly"/>
                         <outlet property="previewView" destination="Ge2-wJ-1e1" id="yuA-VR-lkm"/>
                         <outlet property="stillButton" destination="ruD-Sw-irU" id="qBY-ye-MMX"/>
+                        <outlet property="stillButtonView" destination="DW7-sR-5oC" id="Qfm-GN-lc2"/>
                         <segue destination="PWB-Ch-ZNO" kind="custom" id="Mlo-vN-3Wm"/>
                     </connections>
                 </viewController>
@@ -84,41 +87,45 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="QDe-GH-OAN">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
                             <view contentMode="scaleToFill" id="FMB-DH-fYy">
                                 <rect key="frame" x="0.0" y="478" width="320" height="90"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Rdp-PG-3AH">
+                                        <rect key="frame" x="125" y="0.0" width="70" height="90"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                        <state key="normal" image="button_share_mrselfie.png">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="share:" destination="PWB-Ch-ZNO" eventType="touchUpInside" id="njq-T0-27v"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="cHU-hp-N0i">
+                                        <rect key="frame" x="215" y="35" width="114" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <size key="titleShadowOffset" width="1" height="1"/>
+                                        <state key="normal" title="Retake">
+                                            <color key="titleColor" red="1" green="0.0" blue="0.98823535442352295" alpha="1" colorSpace="deviceRGB"/>
+                                            <color key="titleShadowColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="retake:" destination="PWB-Ch-ZNO" eventType="touchUpInside" id="D1D-nk-AkD"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Rdp-PG-3AH">
-                                <rect key="frame" x="130" y="480" width="70" height="90"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <state key="normal" image="button_share_mrselfie.png">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="share:" destination="PWB-Ch-ZNO" eventType="touchUpInside" id="njq-T0-27v"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="cHU-hp-N0i">
-                                <rect key="frame" x="220" y="515" width="114" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <size key="titleShadowOffset" width="1" height="1"/>
-                                <state key="normal" title="Retake">
-                                    <color key="titleColor" red="1" green="0.0" blue="0.98823535442352295" alpha="1" colorSpace="deviceRGB"/>
-                                    <color key="titleShadowColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="retake:" destination="PWB-Ch-ZNO" eventType="touchUpInside" id="D1D-nk-AkD"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="buttonContainerView" destination="FMB-DH-fYy" id="agO-wX-8eG"/>
                         <outlet property="imageView" destination="QDe-GH-OAN" id="wCw-lS-60g"/>
                     </connections>
                 </viewController>

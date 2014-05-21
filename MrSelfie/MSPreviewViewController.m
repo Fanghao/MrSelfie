@@ -228,8 +228,8 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
         return;
     }
 
-    NSString *string = @"Taken with Shots";
-    
+    NSString *string = @"Taken with http://shotsapp.co";
+
     // open up fb share
     UIActivityViewController *activityViewController =
     [[UIActivityViewController alloc] initWithActivityItems:@[string, self.fileUrl]

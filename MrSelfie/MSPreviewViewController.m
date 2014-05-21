@@ -559,6 +559,7 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
         default:
             break;
     }
+}
 
 
 #pragma mark - tracking

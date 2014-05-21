@@ -7,6 +7,7 @@
 //
 
 #import "MSPreviewViewController.h"
+#import "Mixpanel.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <ImageIO/ImageIO.h>
 #import <MobileCoreServices/MobileCoreServices.h>
@@ -44,24 +45,167 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
     
+
+    self.fileUrl = nil;
     self.firstImage = [self.photos objectAtIndex:0];
-    
+
     NSMutableArray *arr = [NSMutableArray array];
-    
+
+    CGFloat alpha = 0.0f;
+
     for (int i=0; i<15; i++) {
-        [arr addObject:self.firstImage];
+
+        if (i > 9 && i < 15) {
+            UIImage *test = [self addFlashOverlay:[self fixOrientationOfImage:self.firstImage] withAlpha:alpha];
+
+            alpha += .2;
+
+            [arr addObject:test];
+        } else {
+
+            [arr addObject:self.firstImage];
+        }
     }
-    
+
     for (UIImage *img in self.photos) {
         [arr addObject:img];
+        [arr addObject:img];
     }
-    
+
     self.photos = arr;
-    
+
     self.currentIndex = self.photos.count - 1;
     [self showNextImage];
-    
+
     [self createVideo];
+
+    [self trackShotTaken];
+}
+
+
+- (UIImage *)fixOrientationOfImage:(UIImage *)image {
+
+    // No-op if the orientation is already correct
+    if (image.imageOrientation == UIImageOrientationUp) return image;
+
+    // We need to calculate the proper transformation to make the image upright.
+    // We do it in 2 steps: Rotate if Left/Right/Down, and then flip if Mirrored.
+    CGAffineTransform transform = CGAffineTransformIdentity;
+
+    switch (image.imageOrientation) {
+        case UIImageOrientationDown:
+        case UIImageOrientationDownMirrored:
+            transform = CGAffineTransformTranslate(transform, image.size.width, image.size.height);
+            transform = CGAffineTransformRotate(transform, M_PI);
+            break;
+
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+            transform = CGAffineTransformTranslate(transform, image.size.width, 0);
+            transform = CGAffineTransformRotate(transform, M_PI_2);
+            break;
+
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            transform = CGAffineTransformTranslate(transform, 0, image.size.height);
+            transform = CGAffineTransformRotate(transform, -M_PI_2);
+            break;
+        case UIImageOrientationUp:
+        case UIImageOrientationUpMirrored:
+            break;
+    }
+
+    switch (image.imageOrientation) {
+        case UIImageOrientationUpMirrored:
+        case UIImageOrientationDownMirrored:
+            transform = CGAffineTransformTranslate(transform, image.size.width, 0);
+            transform = CGAffineTransformScale(transform, -1, 1);
+            break;
+
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRightMirrored:
+            transform = CGAffineTransformTranslate(transform, image.size.height, 0);
+            transform = CGAffineTransformScale(transform, -1, 1);
+            break;
+        case UIImageOrientationUp:
+        case UIImageOrientationDown:
+        case UIImageOrientationLeft:
+        case UIImageOrientationRight:
+            break;
+    }
+
+    // Now we draw the underlying CGImage into a new context, applying the transform
+    // calculated above.
+    CGContextRef ctx = CGBitmapContextCreate(NULL, image.size.width, image.size.height,
+            CGImageGetBitsPerComponent(image.CGImage), 0,
+            CGImageGetColorSpace(image.CGImage),
+            CGImageGetBitmapInfo(image.CGImage));
+    CGContextConcatCTM(ctx, transform);
+    switch (image.imageOrientation) {
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            // Grr...
+            CGContextDrawImage(ctx, CGRectMake(0,0,image.size.height,image.size.width), image.CGImage);
+            break;
+
+        default:
+            CGContextDrawImage(ctx, CGRectMake(0,0,image.size.width,image.size.height), image.CGImage);
+            break;
+    }
+
+    // And now we just create a new UIImage from the drawing context
+    CGImageRef cgimg = CGBitmapContextCreateImage(ctx);
+    UIImage *img = [UIImage imageWithCGImage:cgimg];
+    CGContextRelease(ctx);
+    CGImageRelease(cgimg);
+    UIImage* flippedImage = [UIImage imageWithCGImage:img.CGImage
+                                                scale:img.scale orientation:UIImageOrientationUpMirrored];
+    return flippedImage;
+}
+
+- (UIImage *)addFlashOverlay:(UIImage *)backImage withAlpha:(CGFloat)alpha {
+
+    UIImage *flashOverlay = [self imageWithColor:[UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:alpha]
+                                         andSize:backImage.size];
+
+    UIImage *newImage;
+
+    CGRect rect = CGRectMake(0, 0, backImage.size.width, backImage.size.height);
+
+    // Begin context
+    UIGraphicsBeginImageContext(rect.size);
+
+    // draw images
+    [backImage drawInRect:rect];
+    [flashOverlay drawInRect:rect];
+
+    // grab context
+    newImage = UIGraphicsGetImageFromCurrentImageContext();
+
+    // end context
+    UIGraphicsEndImageContext();
+
+    return newImage;
+}
+
+- (UIImage *)imageWithColor:(UIColor *)color andSize:(CGSize)size {
+    CGRect rect = CGRectMake(0.0f, 0.0f, size.width, size.height);
+
+    // Begin context
+    UIGraphicsBeginImageContext(rect.size);
+
+    CGContextRef context = UIGraphicsGetCurrentContext();
+
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+
+    UIGraphicsEndImageContext();
+
+    return image;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -75,7 +219,14 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
 }
 
 - (void)showNextImage {
-    [self.imageView setImage:[self.photos objectAtIndex:self.currentIndex]];
+    if (self.currentIndex > 9 && self.currentIndex < 15) {
+        UIImage *image = [self.photos objectAtIndex:self.currentIndex];
+        UIImage* flippedImage = [UIImage imageWithCGImage:image.CGImage
+                                                    scale:image.scale orientation:UIImageOrientationUpMirrored];
+        [self.imageView setImage:flippedImage];
+    } else {
+        [self.imageView setImage:[self.photos objectAtIndex:self.currentIndex]];
+    }
     
     // reached the end of slideshow
     if (self.currentIndex == 0) {
@@ -86,21 +237,60 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     
     // default case, increment and show the next image
     self.currentIndex -= 1;
-    [self performSelector:@selector(showNextImage) withObject:nil afterDelay:0.2];
+    [self performSelector:@selector(showNextImage) withObject:nil afterDelay:0.1];
 }
 
 - (IBAction)share:(id)sender {
-    NSString *string = @"Taken with Shots";
-    
+    if (!self.fileUrl) {
+        return;
+    }
+
+    NSString *string = @"Taken with http://shotsapp.co";
+
     // open up fb share
     UIActivityViewController *activityViewController =
     [[UIActivityViewController alloc] initWithActivityItems:@[string, self.fileUrl]
                                       applicationActivities:nil];
+    
+    [activityViewController setCompletionHandler:^(NSString *activityType, BOOL completed) {
+        NSString *shareMediaType = @"NONE";
+        
+        if([activityType isEqualToString: UIActivityTypeMail]){
+            shareMediaType = @"MAIL";
+        }
+        
+        if([activityType isEqualToString: UIActivityTypePostToFacebook]){
+            shareMediaType = @"FACEBOOK";
+        }
+        
+        if([activityType isEqualToString: UIActivityTypePostToTwitter]){
+            shareMediaType = @"TWITTER";
+        }
+        
+        if([activityType isEqualToString: UIActivityTypeSaveToCameraRoll]){
+            shareMediaType = @"SAVE_TO_CAMERA";
+        }
+        
+        if([activityType isEqualToString: UIActivityTypeCopyToPasteboard]){
+            shareMediaType = @"COPIED_TO_PASTEBOARD";
+        }
+        
+        if([activityType isEqualToString: UIActivityTypeMessage]){
+            shareMediaType = @"MESSAGE";
+        }
+        
+        [[Mixpanel sharedInstance] track:@"SUCCESSFULLY_SHARED_VIDEO" properties:@{
+                                                                                   @"TYPE": shareMediaType,
+                                                                                   }];
+        
+        NSLog(@"SHARE DONE!");
+    }];
+
     [self presentViewController:activityViewController
                                        animated:YES
-                                     completion:^{
-                                         NSLog(@"Share Done!");
-                                     }];
+                                     completion:nil];
+    
+    [[Mixpanel sharedInstance] track:@"CLICKED_SHARE_BUTTON"];
 }
 
 - (IBAction)retake:(id)sender {
@@ -109,6 +299,8 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     [self dismissViewControllerAnimated:NO completion:^(void){
         weakSelf.photos = nil;
     }];
+    
+    [[Mixpanel sharedInstance] track:@"CLICKED_RETAKE_BUTTON"];
 }
 
 - (void)createAnimatedGif {
@@ -122,7 +314,7 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     
     NSDictionary *frameProperties = @{
                                       (__bridge id)kCGImagePropertyGIFDictionary: @{
-                                              (__bridge id)kCGImagePropertyGIFDelayTime: @0.2f, // a float (not double!) in seconds, rounded to centiseconds in the GIF data
+                                              (__bridge id)kCGImagePropertyGIFDelayTime: @0.1f, // a float (not double!) in seconds, rounded to centiseconds in the GIF data
                                               }
                                       };
     
@@ -232,7 +424,7 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
         
         //convert uiimage to CGImage.
         int frameCount = 0;
-        double numberOfSecondsPerFrame = 0.2;
+        double numberOfSecondsPerFrame = 0.1;
         double frameDuration = fps * numberOfSecondsPerFrame;
         
         //for(VideoFrame * frm in imageArray)
@@ -367,6 +559,25 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
         default:
             break;
     }
+
+
+#pragma mark - tracking
+
+- (void)trackShotTaken {
+    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+    
+    NSString *orientationString = @"LANDSCAPE";
+
+    if (orientation == UIDeviceOrientationPortrait || orientation == UIDeviceOrientationPortraitUpsideDown) {
+        orientationString = @"PORTRAIT";
+    }
+    
+    NSNumber *length = [NSNumber numberWithLong:(self.photos.count - 15)];
+    
+    [[Mixpanel sharedInstance] track:@"SHOT_TAKEN" properties:@{
+                                                                @"LENGTH": length,
+                                                                @"ORIENTATION": orientationString,
+                                                                }];
 }
 
 @end

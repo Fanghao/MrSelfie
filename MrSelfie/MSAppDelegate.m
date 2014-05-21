@@ -14,6 +14,15 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [Mixpanel sharedInstanceWithToken:@"1ea44c33388225967058a90e79beb09e"];
+    
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"HasLaunchedOnce"])
+    {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"HasLaunchedOnce"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [[Mixpanel sharedInstance] track:@"FIRST_TIME_LAUNCH"];
+    }
+    
     return YES;
 }
 

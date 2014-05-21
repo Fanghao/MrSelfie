@@ -12,6 +12,9 @@
 #import "Mixpanel.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <AudioToolbox/AudioToolbox.h>
+#import <MediaPlayer/MediaPlayer.h>
+#import "RBVolumeButtons.h"
 
 #define ImageCapacity 10
 #define SnapInterval 0.2
@@ -42,6 +45,8 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 @property (nonatomic, strong) NSMutableArray *imageArrays;
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic) BOOL isUserTapped;
+
+@property (nonatomic, strong) RBVolumeButtons *buttonStealer;
 
 @end
 
@@ -129,6 +134,17 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 	});
     
     [[Mixpanel sharedInstance] track:@"OPENED_CAMERA"];
+
+    self.buttonStealer = [[RBVolumeButtons alloc] init];
+    
+    __weak __typeof(self) weakSelf = self;
+    self.buttonStealer.upBlock = ^{
+        [weakSelf stillButtonPressed:nil];
+    };
+    self.buttonStealer.downBlock = ^{
+        [weakSelf stillButtonPressed:nil];
+    };
+    [self.buttonStealer startStealingVolumeButtonEvents];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

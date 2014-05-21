@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BD7DD1D1192C729E0051B91C /* RBVolumeButtons.m in Sources */ = {isa = PBXBuildFile; fileRef = BD7DD1D0192C729E0051B91C /* RBVolumeButtons.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		BD7DD1D3192C73540051B91C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD7DD1D2192C73540051B91C /* MediaPlayer.framework */; };
+		BD7DD1D5192C73640051B91C /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD7DD1D4192C73640051B91C /* AudioToolbox.framework */; };
+		BD7DD1D7192C736A0051B91C /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD7DD1D6192C736A0051B91C /* CoreAudio.framework */; };
+		BD7DD1D8192C73F10051B91C /* RBVolumeButtons.h in Sources */ = {isa = PBXBuildFile; fileRef = BD7DD1CF192C729E0051B91C /* RBVolumeButtons.h */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		BDA24F47192C3C4D00135A4E /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BDA24F2A192C3C4D00135A4E /* Media.xcassets */; };
 		BDA24F48192C3C4D00135A4E /* Mixpanel.m in Sources */ = {isa = PBXBuildFile; fileRef = BDA24F2C192C3C4D00135A4E /* Mixpanel.m */; };
 		BDA24F49192C3C4D00135A4E /* MPCloseBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = BDA24F2D192C3C4D00135A4E /* MPCloseBtn.png */; };
@@ -63,6 +68,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BD7DD1CF192C729E0051B91C /* RBVolumeButtons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RBVolumeButtons.h; sourceTree = "<group>"; };
+		BD7DD1D0192C729E0051B91C /* RBVolumeButtons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RBVolumeButtons.m; sourceTree = "<group>"; };
+		BD7DD1D2192C73540051B91C /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		BD7DD1D4192C73640051B91C /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		BD7DD1D6192C736A0051B91C /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		BDA24F2A192C3C4D00135A4E /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		BDA24F2B192C3C4D00135A4E /* Mixpanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Mixpanel.h; sourceTree = "<group>"; };
 		BDA24F2C192C3C4D00135A4E /* Mixpanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Mixpanel.m; sourceTree = "<group>"; };
@@ -132,6 +142,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD7DD1D7192C736A0051B91C /* CoreAudio.framework in Frameworks */,
+				BD7DD1D5192C73640051B91C /* AudioToolbox.framework in Frameworks */,
+				BD7DD1D3192C73540051B91C /* MediaPlayer.framework in Frameworks */,
 				BDFD6DBA1925B1E000D74AEF /* AVFoundation.framework in Frameworks */,
 				BDFD6DB819258FD500D74AEF /* MobileCoreServices.framework in Frameworks */,
 				BDFD6DB619258FCE00D74AEF /* ImageIO.framework in Frameworks */,
@@ -225,6 +238,9 @@
 		C13377A61925701C0067F20E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BD7DD1D6192C736A0051B91C /* CoreAudio.framework */,
+				BD7DD1D4192C73640051B91C /* AudioToolbox.framework */,
+				BD7DD1D2192C73540051B91C /* MediaPlayer.framework */,
 				BDFD6DB91925B1E000D74AEF /* AVFoundation.framework */,
 				BDFD6DB719258FD500D74AEF /* MobileCoreServices.framework */,
 				BDFD6DB519258FCE00D74AEF /* ImageIO.framework */,
@@ -251,6 +267,8 @@
 				C1337820192577C70067F20E /* MSCamPreviewView.h */,
 				C1337821192577C70067F20E /* MSCamPreviewView.m */,
 				C13377AE1925701C0067F20E /* Supporting Files */,
+				BD7DD1CF192C729E0051B91C /* RBVolumeButtons.h */,
+				BD7DD1D0192C729E0051B91C /* RBVolumeButtons.m */,
 			);
 			path = MrSelfie;
 			sourceTree = "<group>";
@@ -352,7 +370,7 @@
 				ORGANIZATIONNAME = MSStorm8;
 				TargetAttributes = {
 					C13377A31925701C0067F20E = {
-						DevelopmentTeam = Y66H5H8W8W;
+						DevelopmentTeam = X77LDY7Z5E;
 					};
 					C13377BE1925701C0067F20E = {
 						TestTargetID = C13377A31925701C0067F20E;
@@ -416,9 +434,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD7DD1D8192C73F10051B91C /* RBVolumeButtons.h in Sources */,
 				BDA24F54192C3C4D00135A4E /* UIColor+MPColor.m in Sources */,
 				BDA24F51192C3C4D00135A4E /* MPSurveyQuestion.m in Sources */,
 				BDA24F50192C3C4D00135A4E /* MPSurveyNavigationController.m in Sources */,
+				BD7DD1D1192C729E0051B91C /* RBVolumeButtons.m in Sources */,
 				BDA24F55192C3C4D00135A4E /* UIImage+MPAverageColor.m in Sources */,
 				BDA24F4E192C3C4D00135A4E /* MPSurvey.m in Sources */,
 				BDFD6D9519257C3E00D74AEF /* MSCamViewController.m in Sources */,

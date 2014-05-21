@@ -7,11 +7,13 @@
 //
 
 #import "MSAppDelegate.h"
+#import "Mixpanel.h"
 
 @implementation MSAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [Mixpanel sharedInstanceWithToken:@"1ea44c33388225967058a90e79beb09e"];
     return YES;
 }
 

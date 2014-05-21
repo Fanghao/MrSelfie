@@ -7,6 +7,7 @@
 //
 
 #import "MSPreviewViewController.h"
+#import "Mixpanel.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <ImageIO/ImageIO.h>
 #import <MobileCoreServices/MobileCoreServices.h>
@@ -37,22 +38,6 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
 {
     [super viewDidLoad];
     
-//    self.photos = @[
-//                    [UIImage imageNamed:@"IMG_2455.jpg"],
-//                    [UIImage imageNamed:@"IMG_2454.jpg"],
-//                    [UIImage imageNamed:@"IMG_2453.jpg"],
-//                    [UIImage imageNamed:@"IMG_2452.jpg"],
-//                    [UIImage imageNamed:@"IMG_2451.jpg"],
-//                    [UIImage imageNamed:@"IMG_2450.jpg"],
-//                    [UIImage imageNamed:@"IMG_2449.jpg"],
-//                    [UIImage imageNamed:@"IMG_2448.jpg"],
-//                    [UIImage imageNamed:@"IMG_2447.jpg"],
-//                    [UIImage imageNamed:@"IMG_2446.jpg"],
-//                    [UIImage imageNamed:@"IMG_2445.jpg"],
-//                    [UIImage imageNamed:@"IMG_2444.jpg"],
-//                    [UIImage imageNamed:@"IMG_2443.jpg"],
-//                    ];
-    
     self.firstImage = [self.photos objectAtIndex:0];
     
     NSMutableArray *arr = [NSMutableArray array];
@@ -71,6 +56,8 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     [self showNextImage];
     
     [self createVideo];
+    
+    [self trackShotTaken];
 }
 
 - (void)showNextImage {
@@ -95,11 +82,46 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     UIActivityViewController *activityViewController =
     [[UIActivityViewController alloc] initWithActivityItems:@[string, self.fileUrl]
                                       applicationActivities:nil];
+    
+    [activityViewController setCompletionHandler:^(NSString *activityType, BOOL completed) {
+        NSString *shareMediaType = @"NONE";
+        
+        if([activityType isEqualToString: UIActivityTypeMail]){
+            shareMediaType = @"MAIL";
+        }
+        
+        if([activityType isEqualToString: UIActivityTypePostToFacebook]){
+            shareMediaType = @"FACEBOOK";
+        }
+        
+        if([activityType isEqualToString: UIActivityTypePostToTwitter]){
+            shareMediaType = @"TWITTER";
+        }
+        
+        if([activityType isEqualToString: UIActivityTypeSaveToCameraRoll]){
+            shareMediaType = @"SAVE_TO_CAMERA";
+        }
+        
+        if([activityType isEqualToString: UIActivityTypeCopyToPasteboard]){
+            shareMediaType = @"COPIED_TO_PASTEBOARD";
+        }
+        
+        if([activityType isEqualToString: UIActivityTypeMessage]){
+            shareMediaType = @"MESSAGE";
+        }
+        
+        [[Mixpanel sharedInstance] track:@"SUCCESSFULLY_SHARED_VIDEO" properties:@{
+                                                                                   @"TYPE": shareMediaType,
+                                                                                   }];
+        
+        NSLog(@"SHARE DONE!");
+    }];
+
     [self presentViewController:activityViewController
                                        animated:YES
-                                     completion:^{
-                                         NSLog(@"Share Done!");
-                                     }];
+                                     completion:nil];
+    
+    [[Mixpanel sharedInstance] track:@"CLICKED_SHARE_BUTTON"];
 }
 
 - (IBAction)retake:(id)sender {
@@ -107,6 +129,8 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     [self dismissViewControllerAnimated:NO completion:^(void){
         weakSelf.photos = nil;
     }];
+    
+    [[Mixpanel sharedInstance] track:@"CLICKED_RETAKE_BUTTON"];
 }
 
 - (void)createAnimatedGif {
@@ -333,6 +357,26 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     CVPixelBufferUnlockBaseAddress(pxbuffer, 0);
     
     return pxbuffer;
+}
+
+
+#pragma mark - tracking
+
+- (void)trackShotTaken {
+    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+    
+    NSString *orientationString = @"LANDSCAPE";
+
+    if (orientation == UIDeviceOrientationPortrait || orientation == UIDeviceOrientationPortraitUpsideDown) {
+        orientationString = @"PORTRAIT";
+    }
+    
+    NSNumber *length = [NSNumber numberWithLong:(self.photos.count - 15)];
+    
+    [[Mixpanel sharedInstance] track:@"SHOT_TAKEN" properties:@{
+                                                                @"LENGTH": length,
+                                                                @"ORIENTATION": orientationString,
+                                                                }];
 }
 
 @end

@@ -9,6 +9,7 @@
 #import "MSCamViewController.h"
 #import "MSCamPreviewView.h"
 #import "MSPreviewViewController.h"
+#import "Mixpanel.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
@@ -119,6 +120,8 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 			[self setStillImageOutput:stillImageOutput];
 		}
 	});
+    
+    [[Mixpanel sharedInstance] track:@"OPENED_CAMERA"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

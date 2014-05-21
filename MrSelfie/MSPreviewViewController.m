@@ -231,7 +231,7 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     // reached the end of slideshow
     if (self.currentIndex == 0) {
         self.currentIndex = self.photos.count - 1;
-        [self performSelector:@selector(showNextImage) withObject:nil afterDelay:3];
+        [self performSelector:@selector(showNextImage) withObject:nil afterDelay:0.3];
         return;
     }
     

@@ -41,12 +41,28 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     self.firstImage = [self.photos objectAtIndex:0];
     
     NSMutableArray *arr = [NSMutableArray array];
-    
+
+    CGFloat alpha = 0.0f;
+
+
+
+
     for (int i=0; i<15; i++) {
-        [arr addObject:self.firstImage];
+
+        if (i > 9 && i < 15) {
+            UIImage *test = [self addFlashOverlay:self.firstImage withAlpha:alpha];
+
+            alpha += .2;
+
+            [arr addObject:test];
+        } else {
+
+            [arr addObject:self.firstImage];
+        }
     }
     
     for (UIImage *img in self.photos) {
+        [arr addObject:img];
         [arr addObject:img];
     }
     
@@ -58,6 +74,49 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     [self createVideo];
     
     [self trackShotTaken];
+}
+
+- (UIImage *)addFlashOverlay:(UIImage *)backImage withAlpha:(CGFloat)alpha {
+
+    UIImage *flashOverlay = [self imageWithColor:[UIColor colorWithRed:1.0f green:1.0f blue:1.0f alpha:alpha]
+                                         andSize:backImage.size];
+
+    UIImage *newImage;
+
+    CGRect rect = CGRectMake(0, 0, backImage.size.width, backImage.size.height);
+
+    // Begin context
+    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
+
+    // draw images
+    [backImage drawInRect:rect];
+    [flashOverlay drawInRect:rect];
+
+    // grab context
+    newImage = UIGraphicsGetImageFromCurrentImageContext();
+
+    // end context
+    UIGraphicsEndImageContext();
+
+    return newImage;
+}
+
+- (UIImage *)imageWithColor:(UIColor *)color andSize:(CGSize)size {
+    CGRect rect = CGRectMake(0.0f, 0.0f, size.width, size.height);
+
+    // Begin context
+    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
+
+    CGContextRef context = UIGraphicsGetCurrentContext();
+
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+
+    UIGraphicsEndImageContext();
+
+    return image;
 }
 
 - (void)showNextImage {
@@ -72,7 +131,7 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     
     // default case, increment and show the next image
     self.currentIndex -= 1;
-    [self performSelector:@selector(showNextImage) withObject:nil afterDelay:0.2];
+    [self performSelector:@selector(showNextImage) withObject:nil afterDelay:0.1];
 }
 
 - (IBAction)share:(id)sender {
@@ -144,7 +203,7 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     
     NSDictionary *frameProperties = @{
                                       (__bridge id)kCGImagePropertyGIFDictionary: @{
-                                              (__bridge id)kCGImagePropertyGIFDelayTime: @0.2f, // a float (not double!) in seconds, rounded to centiseconds in the GIF data
+                                              (__bridge id)kCGImagePropertyGIFDelayTime: @0.1f, // a float (not double!) in seconds, rounded to centiseconds in the GIF data
                                               }
                                       };
     
@@ -254,7 +313,7 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
         
         //convert uiimage to CGImage.
         int frameCount = 0;
-        double numberOfSecondsPerFrame = 0.2;
+        double numberOfSecondsPerFrame = 0.1;
         double frameDuration = fps * numberOfSecondsPerFrame;
         
         //for(VideoFrame * frm in imageArray)

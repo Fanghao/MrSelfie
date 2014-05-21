@@ -540,12 +540,12 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
 }
 
 - (void)orientationChanged {
-    self.buttonContainerView.transform = CGAffineTransformIdentity;
     UIDevice *device = [UIDevice currentDevice];
     int maxLength = MAX(self.view.frame.size.width, self.view.frame.size.height);
     int minLength = MIN(self.view.frame.size.width, self.view.frame.size.height);
     switch (device.orientation) {
         case UIDeviceOrientationPortrait:
+            self.buttonContainerView.transform = CGAffineTransformIdentity;
             self.buttonContainerView.frame = CGRectMake(0, maxLength - self.buttonContainerView.bounds.size.height, self.buttonContainerView.bounds.size.width, self.buttonContainerView.bounds.size.height);
             break;
         case UIDeviceOrientationLandscapeLeft:

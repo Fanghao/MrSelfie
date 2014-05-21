@@ -134,20 +134,26 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 	});
     
     [[Mixpanel sharedInstance] track:@"OPENED_CAMERA"];
+}
 
-    self.buttonStealer = [[RBVolumeButtons alloc] init];
+- (void)viewWillAppear:(BOOL)animated {
+    
+    if (!self.buttonStealer) {
+        self.buttonStealer = [[RBVolumeButtons alloc] init];
+    }
     
     __weak __typeof(self) weakSelf = self;
     self.buttonStealer.upBlock = ^{
         [weakSelf stillButtonPressed:nil];
+        [weakSelf.buttonStealer stopStealingVolumeButtonEvents];
     };
     self.buttonStealer.downBlock = ^{
         [weakSelf stillButtonPressed:nil];
+        [weakSelf.buttonStealer stopStealingVolumeButtonEvents];
     };
-    [self.buttonStealer startStealingVolumeButtonEvents];
-}
 
-- (void)viewWillAppear:(BOOL)animated {
+    [self.buttonStealer startStealingVolumeButtonEvents];
+
     [self performSelector:@selector(startTimer) withObject:nil afterDelay:SnapInterval];
     self.isUserTapped = NO;
     [[(AVCaptureVideoPreviewLayer *)[[self previewView] layer] connection] setVideoOrientation:(AVCaptureVideoOrientation)[self interfaceOrientation]];
@@ -222,10 +228,10 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 }
 
 - (void)orientationChanged {
-    self.stillButtonView.transform = CGAffineTransformIdentity;
     UIDevice *device = [UIDevice currentDevice];
     switch (device.orientation) {
         case UIDeviceOrientationPortrait:
+            self.stillButtonView.transform = CGAffineTransformIdentity;
             self.stillButtonView.frame = CGRectMake(0, self.view.frame.size.height - self.stillButtonView.bounds.size.height, self.stillButtonView.bounds.size.width, self.stillButtonView.bounds.size.height);
             break;
         case UIDeviceOrientationLandscapeLeft:
@@ -488,7 +494,11 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 - (UIImage *)fixOrientationOfImage:(UIImage *)image {
     
     // No-op if the orientation is already correct
-    if (image.imageOrientation == UIImageOrientationUp) return image;
+    if (image.imageOrientation == UIImageOrientationUp) {
+        UIImage* flippedImage = [UIImage imageWithCGImage:image.CGImage
+                                                    scale:image.scale orientation:UIImageOrientationUpMirrored];
+        return flippedImage;
+    }
     
     // We need to calculate the proper transformation to make the image upright.
     // We do it in 2 steps: Rotate if Left/Right/Down, and then flip if Mirrored.

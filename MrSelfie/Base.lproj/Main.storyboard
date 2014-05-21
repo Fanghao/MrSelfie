@@ -94,7 +94,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Rdp-PG-3AH">
-                                        <rect key="frame" x="125" y="0.0" width="70" height="90"/>
+                                        <rect key="frame" x="118" y="0.0" width="85" height="90"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                         <state key="normal" image="button_share_mrselfie.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -136,7 +136,7 @@
     </scenes>
     <resources>
         <image name="button_camera_mrselfie.png" width="70" height="90"/>
-        <image name="button_share_mrselfie.png" width="70" height="90"/>
+        <image name="button_share_mrselfie.png" width="85" height="90"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

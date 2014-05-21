@@ -37,20 +37,19 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
+    self.fileUrl = nil;
+
     self.firstImage = [self.photos objectAtIndex:0];
-    
+
     NSMutableArray *arr = [NSMutableArray array];
 
     CGFloat alpha = 0.0f;
 
-
-
-
     for (int i=0; i<15; i++) {
 
         if (i > 9 && i < 15) {
-            UIImage *test = [self addFlashOverlay:self.firstImage withAlpha:alpha];
+            UIImage *test = [self addFlashOverlay:[self fixOrientationOfImage:self.firstImage] withAlpha:alpha];
 
             alpha += .2;
 
@@ -60,20 +59,103 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
             [arr addObject:self.firstImage];
         }
     }
-    
+
     for (UIImage *img in self.photos) {
         [arr addObject:img];
         [arr addObject:img];
     }
-    
+
     self.photos = arr;
-    
+
     self.currentIndex = self.photos.count - 1;
     [self showNextImage];
-    
+
     [self createVideo];
-    
+
     [self trackShotTaken];
+}
+
+
+- (UIImage *)fixOrientationOfImage:(UIImage *)image {
+
+    // No-op if the orientation is already correct
+    if (image.imageOrientation == UIImageOrientationUp) return image;
+
+    // We need to calculate the proper transformation to make the image upright.
+    // We do it in 2 steps: Rotate if Left/Right/Down, and then flip if Mirrored.
+    CGAffineTransform transform = CGAffineTransformIdentity;
+
+    switch (image.imageOrientation) {
+        case UIImageOrientationDown:
+        case UIImageOrientationDownMirrored:
+            transform = CGAffineTransformTranslate(transform, image.size.width, image.size.height);
+            transform = CGAffineTransformRotate(transform, M_PI);
+            break;
+
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+            transform = CGAffineTransformTranslate(transform, image.size.width, 0);
+            transform = CGAffineTransformRotate(transform, M_PI_2);
+            break;
+
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            transform = CGAffineTransformTranslate(transform, 0, image.size.height);
+            transform = CGAffineTransformRotate(transform, -M_PI_2);
+            break;
+        case UIImageOrientationUp:
+        case UIImageOrientationUpMirrored:
+            break;
+    }
+
+    switch (image.imageOrientation) {
+        case UIImageOrientationUpMirrored:
+        case UIImageOrientationDownMirrored:
+            transform = CGAffineTransformTranslate(transform, image.size.width, 0);
+            transform = CGAffineTransformScale(transform, -1, 1);
+            break;
+
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRightMirrored:
+            transform = CGAffineTransformTranslate(transform, image.size.height, 0);
+            transform = CGAffineTransformScale(transform, -1, 1);
+            break;
+        case UIImageOrientationUp:
+        case UIImageOrientationDown:
+        case UIImageOrientationLeft:
+        case UIImageOrientationRight:
+            break;
+    }
+
+    // Now we draw the underlying CGImage into a new context, applying the transform
+    // calculated above.
+    CGContextRef ctx = CGBitmapContextCreate(NULL, image.size.width, image.size.height,
+            CGImageGetBitsPerComponent(image.CGImage), 0,
+            CGImageGetColorSpace(image.CGImage),
+            CGImageGetBitmapInfo(image.CGImage));
+    CGContextConcatCTM(ctx, transform);
+    switch (image.imageOrientation) {
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            // Grr...
+            CGContextDrawImage(ctx, CGRectMake(0,0,image.size.height,image.size.width), image.CGImage);
+            break;
+
+        default:
+            CGContextDrawImage(ctx, CGRectMake(0,0,image.size.width,image.size.height), image.CGImage);
+            break;
+    }
+
+    // And now we just create a new UIImage from the drawing context
+    CGImageRef cgimg = CGBitmapContextCreateImage(ctx);
+    UIImage *img = [UIImage imageWithCGImage:cgimg];
+    CGContextRelease(ctx);
+    CGImageRelease(cgimg);
+    UIImage* flippedImage = [UIImage imageWithCGImage:img.CGImage
+                                                scale:img.scale orientation:UIImageOrientationUpMirrored];
+    return flippedImage;
 }
 
 - (UIImage *)addFlashOverlay:(UIImage *)backImage withAlpha:(CGFloat)alpha {
@@ -86,7 +168,7 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     CGRect rect = CGRectMake(0, 0, backImage.size.width, backImage.size.height);
 
     // Begin context
-    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
+    UIGraphicsBeginImageContext(rect.size);
 
     // draw images
     [backImage drawInRect:rect];
@@ -105,7 +187,7 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     CGRect rect = CGRectMake(0.0f, 0.0f, size.width, size.height);
 
     // Begin context
-    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
+    UIGraphicsBeginImageContext(rect.size);
 
     CGContextRef context = UIGraphicsGetCurrentContext();
 
@@ -120,7 +202,14 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
 }
 
 - (void)showNextImage {
-    [self.imageView setImage:[self.photos objectAtIndex:self.currentIndex]];
+    if (self.currentIndex > 9 && self.currentIndex < 15) {
+        UIImage *image = [self.photos objectAtIndex:self.currentIndex];
+        UIImage* flippedImage = [UIImage imageWithCGImage:image.CGImage
+                                                    scale:image.scale orientation:UIImageOrientationUpMirrored];
+        [self.imageView setImage:flippedImage];
+    } else {
+        [self.imageView setImage:[self.photos objectAtIndex:self.currentIndex]];
+    }
     
     // reached the end of slideshow
     if (self.currentIndex == 0) {
@@ -135,6 +224,10 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
 }
 
 - (IBAction)share:(id)sender {
+    if (!self.fileUrl) {
+        return;
+    }
+
     NSString *string = @"Taken with Shots";
     
     // open up fb share

@@ -135,7 +135,7 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
 }
 
 - (IBAction)share:(id)sender {
-    NSString *string = @"Taken with Shots";
+    NSString *string = @"Taken with http://shotsapp.co";
     
     // open up fb share
     UIActivityViewController *activityViewController =

@@ -17,10 +17,11 @@
 #import "RBVolumeButtons.h"
 
 #define ImageCapacity 10
-#define SnapInterval 0.2
+#define SnapInterval 0.6 // SnapInterval > 0.6 will cancel the shutter sounds
 
 static void * CapturingStillImageContext = &CapturingStillImageContext;
 static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDeviceAuthorizedContext;
+static SystemSoundID soundID = 0;
 
 @interface MSCamViewController ()
 
@@ -65,6 +66,8 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
+    
+    [self createShutterSound];
     
     self.navigationController.navigationBar.hidden = YES;
     self.imageArrays = [NSMutableArray arrayWithCapacity:ImageCapacity];
@@ -138,6 +141,8 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 
 - (void)viewWillAppear:(BOOL)animated {
     
+    self.stillButton.enabled = YES;
+
     if (!self.buttonStealer) {
         self.buttonStealer = [[RBVolumeButtons alloc] init];
     }
@@ -336,8 +341,17 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 	});
 }
 
+- (void)createShutterSound {
+    if (soundID == 0) {
+        NSString *path = [[NSBundle mainBundle] pathForResource:@"photoShutter2" ofType:@"caf"];
+        NSURL *filePath = [NSURL fileURLWithPath:path isDirectory:NO];
+        AudioServicesCreateSystemSoundID((__bridge CFURLRef)filePath, &soundID);
+    }
+}
+
 - (IBAction)stillButtonPressed:(id)sender {
     self.isUserTapped = YES;
+    self.stillButton.enabled = NO;
     [self stopTimer];
     [self snapStillImage];
 }
@@ -350,6 +364,10 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 		// Flash set to Auto for Still Capture
 		[MSCamViewController setFlashMode:AVCaptureFlashModeAuto forDevice:[[self videoDeviceInput] device]];
 		
+        if (!self.isUserTapped) {
+            AudioServicesPlaySystemSound(soundID);
+        }
+        
 		// Capture a still image.
 		[[self stillImageOutput] captureStillImageAsynchronouslyFromConnection:[[self stillImageOutput] connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
 			
@@ -478,8 +496,8 @@ static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDevic
 		{
 			//Not granted access to mediaType
 			dispatch_async(dispatch_get_main_queue(), ^{
-				[[[UIAlertView alloc] initWithTitle:@"MrSelfie!"
-											message:@"MrSelfie doesn't have permission to use Camera, please change privacy settings"
+				[[[UIAlertView alloc] initWithTitle:@"Shots!"
+											message:@"Shots doesn't have permission to use Camera, please change privacy settings"
 										   delegate:self
 								  cancelButtonTitle:@"OK"
 								  otherButtonTitles:nil] show];

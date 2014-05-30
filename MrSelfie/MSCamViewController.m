@@ -67,8 +67,6 @@ static SystemSoundID soundID = 0;
 - (void)viewDidLoad {
 	[super viewDidLoad];
     
-    [self createShutterSound];
-    
     self.navigationController.navigationBar.hidden = YES;
     self.imageArrays = [NSMutableArray arrayWithCapacity:ImageCapacity];
     
@@ -140,7 +138,10 @@ static SystemSoundID soundID = 0;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(becomeInactive) name:@"WILL_RESIGN_ACTIVE" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(becomeActiveFromBackground) name:@"DID_BECOME_ACTIVE" object:nil];
     
+    [self createShutterSound];
     self.stillButton.enabled = YES;
 
     if (!self.buttonStealer) {
@@ -181,6 +182,9 @@ static SystemSoundID soundID = 0;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"WILL_RESIGN_ACTIVE" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"DID_BECOME_ACTIVE" object:nil];
+    
 	dispatch_async([self sessionQueue], ^{
 		[[self session] stopRunning];
 		
@@ -197,10 +201,24 @@ static SystemSoundID soundID = 0;
     [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
 }
 
+# pragma mark - APP state
+
+- (void)becomeActiveFromBackground {
+    [self performSelector:@selector(startTimer) withObject:nil afterDelay:SnapInterval];
+}
+
+- (void)becomeInactive {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [self stopTimer];
+    [self.imageArrays removeAllObjects];
+}
+
 #pragma mark - timer
 
 - (void)startTimer {
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:SnapInterval target:self selector:@selector(snapStillImage) userInfo:nil repeats:YES];
+    if (self.timer == nil) {
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:SnapInterval target:self selector:@selector(snapStillImage) userInfo:nil repeats:YES];
+    }
 }
 
 - (void)stopTimer {
@@ -366,6 +384,9 @@ static SystemSoundID soundID = 0;
 		
         if (!self.isUserTapped) {
             AudioServicesPlaySystemSound(soundID);
+        } else {
+            AudioServicesDisposeSystemSoundID(soundID);
+            soundID = 0;
         }
         
 		// Capture a still image.

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MSPreviewViewController : UIViewController
+@interface MSPreviewViewController : UIViewController 
 
 @property (nonatomic, strong) NSArray *photos;
 

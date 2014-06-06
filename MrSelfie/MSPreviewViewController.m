@@ -14,20 +14,31 @@
 #import <AVFoundation/AVFoundation.h>
 
 static NSString *const GIF_FILE_NAME = @"animated.gif";
+static NSString *const PHOTO_FILE_NAME = @"shots.jpg";
+
+typedef enum {
+    MediaTypeStateVideo,
+    MediaTypeStatePhoto
+} MediaTypeState;
 
 @interface MSPreviewViewController ()
 
+@property (nonatomic, strong) IBOutlet UISegmentedControl *mediaTypeSegmentedControl;
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) IBOutlet UIView *buttonContainerView;
+@property (nonatomic, strong) IBOutlet UIView *segmentControlContainer;
 @property (nonatomic, strong) IBOutlet UIButton *shareButton;
 @property (nonatomic, strong) IBOutlet UIButton *retakeButton;
 @property (nonatomic) int currentIndex;
-@property (nonatomic) NSURL *fileUrl;
+@property (nonatomic, strong) NSURL *videoUrl;
+@property (nonatomic, strong) NSURL *photoUrl;
 @property (nonatomic, strong) UIImage *firstImage;
 @property (nonatomic, strong) AVAssetWriter *videoWriter;
+@property (nonatomic) MediaTypeState mediaType;
 
 - (IBAction)share:(id)sender;
 - (IBAction)retake:(id)sender;
+- (IBAction)mediaTypeSwitched:(id)sender;
 
 @end
 
@@ -45,8 +56,9 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
     
-
-    self.fileUrl = nil;
+    
+    self.mediaType = MediaTypeStateVideo;
+    self.videoUrl = nil;
     self.firstImage = [self.photos objectAtIndex:0];
 
     NSMutableArray *arr = [NSMutableArray array];
@@ -78,6 +90,7 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     [self showNextImage];
 
     [self createVideo];
+    [self createPhoto];
 
     [self trackShotTaken];
 }
@@ -219,6 +232,11 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
 }
 
 - (void)showNextImage {
+    if (self.currentIndex <= 0 && self.mediaType == MediaTypeStatePhoto) {
+        [self performSelector:@selector(showNextImage) withObject:nil afterDelay:0.3];
+        return;
+    }
+    
     if (self.currentIndex > 30 && self.currentIndex < 35) {
         UIImage *image = [self.photos objectAtIndex:self.currentIndex];
         UIImage* flippedImage = [UIImage imageWithCGImage:image.CGImage
@@ -241,15 +259,28 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
 }
 
 - (IBAction)share:(id)sender {
-    if (!self.fileUrl) {
+    if (!self.videoUrl && self.mediaType == MediaTypeStateVideo) {
+        return;
+    }
+    
+    if (!self.photoUrl && self.mediaType == MediaTypeStatePhoto) {
         return;
     }
 
     NSString *string = @"Taken with http://shotsapp.co";
+    
+    NSMutableArray *activityItems = [NSMutableArray array];
+    [activityItems addObject:string];
+    
+    if (self.mediaType == MediaTypeStateVideo) {
+        [activityItems addObject:self.videoUrl];
+    } else if (self.mediaType == MediaTypeStatePhoto) {
+        [activityItems addObject:self.photoUrl];
+    }
 
     // open up fb share
     UIActivityViewController *activityViewController =
-    [[UIActivityViewController alloc] initWithActivityItems:@[string, self.fileUrl]
+    [[UIActivityViewController alloc] initWithActivityItems:activityItems
                                       applicationActivities:nil];
     
     [activityViewController setCompletionHandler:^(NSString *activityType, BOOL completed) {
@@ -303,6 +334,21 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     [[Mixpanel sharedInstance] track:@"CLICKED_RETAKE_BUTTON"];
 }
 
+- (IBAction)mediaTypeSwitched:(id)sender {
+    UISegmentedControl *segmentedControl = (UISegmentedControl *) sender;
+    NSInteger selectedSegment = segmentedControl.selectedSegmentIndex;
+    
+    if (selectedSegment == 0) {
+        self.mediaType = MediaTypeStateVideo;
+        self.currentIndex = self.photos.count - 1;
+    } else {
+        self.mediaType = MediaTypeStatePhoto;
+        self.currentIndex = 35;
+    }
+}
+
+#pragma mark - Animated Gif
+
 - (void)createAnimatedGif {
     int frameCount = self.photos.count;
     
@@ -348,13 +394,27 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
     
     CFRelease(destination);
     NSLog(@"%@", fileURL);
-    self.fileUrl = fileURL;
+    self.videoUrl = fileURL;
 //    [[[ALAssetsLibrary alloc] init] writeImageDataToSavedPhotosAlbum:[NSData dataWithContentsOfURL:fileURL] metadata:nil completionBlock:nil];
 }
 
 
+#pragma mark - Photo 
+
+- (void)createPhoto {
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+        UIImage *photo = [self.photos objectAtIndex:0];
+        NSData *photoData = UIImageJPEGRepresentation(photo, 0.0);
+        NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:nil];
+        NSURL *fileUrl = [documentsDirectoryURL URLByAppendingPathComponent:PHOTO_FILE_NAME];
+        [photoData writeToURL:fileUrl atomically:YES];
+        
+        self.photoUrl = fileUrl;
+    });
+}
 
 
+#pragma mark - Video
 
 - (void)createVideo {
     
@@ -478,8 +538,8 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
         }];
         NSLog(@"Write Ended");
         
-        self.fileUrl = [NSURL fileURLWithPath:videoOutputPath];
-        NSLog(@"%@", self.fileUrl);
+        self.videoUrl = [NSURL fileURLWithPath:videoOutputPath];
+        NSLog(@"%@", self.videoUrl);
     });
     
     
@@ -547,14 +607,20 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
         case UIDeviceOrientationPortrait:
             self.buttonContainerView.transform = CGAffineTransformIdentity;
             self.buttonContainerView.frame = CGRectMake(0, maxLength - self.buttonContainerView.bounds.size.height, self.buttonContainerView.bounds.size.width, self.buttonContainerView.bounds.size.height);
+            self.segmentControlContainer.transform = CGAffineTransformIdentity;
+            self.segmentControlContainer.frame = CGRectMake(0, 0, self.segmentControlContainer.bounds.size.width, self.segmentControlContainer.bounds.size.height);
             break;
         case UIDeviceOrientationLandscapeLeft:
             self.buttonContainerView.transform = CGAffineTransformMakeRotation(-M_PI_2);
             self.buttonContainerView.center = CGPointMake(maxLength - self.buttonContainerView.frame.size.width / 2, minLength / 2);
+            self.segmentControlContainer.transform = CGAffineTransformMakeRotation(-M_PI_2);
+            self.segmentControlContainer.center = CGPointMake(self.segmentControlContainer.frame.size.width / 2, minLength / 2);
             break;
         case UIDeviceOrientationLandscapeRight:
             self.buttonContainerView.transform = CGAffineTransformMakeRotation(M_PI_2);
             self.buttonContainerView.center = CGPointMake(self.buttonContainerView.frame.size.width / 2, minLength / 2);
+            self.segmentControlContainer.transform = CGAffineTransformMakeRotation(M_PI_2);
+            self.segmentControlContainer.center = CGPointMake(maxLength - self.segmentControlContainer.frame.size.width / 2, minLength / 2);
             break;
         default:
             break;
@@ -579,6 +645,12 @@ static NSString *const GIF_FILE_NAME = @"animated.gif";
                                                                 @"LENGTH": length,
                                                                 @"ORIENTATION": orientationString,
                                                                 }];
+}
+
+#pragma mark - Status Bar
+
+- (BOOL)prefersStatusBarHidden {
+    return YES;
 }
 
 @end

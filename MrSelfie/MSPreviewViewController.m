@@ -21,6 +21,11 @@ typedef enum {
     MediaTypeStatePhoto
 } MediaTypeState;
 
+typedef enum {
+    PhotoOrientationPortrait,
+    PhotoOrientationLandscape
+} PhotoOrientation;
+
 @interface MSPreviewViewController ()
 
 @property (nonatomic, strong) IBOutlet UISegmentedControl *mediaTypeSegmentedControl;
@@ -78,10 +83,22 @@ typedef enum {
             [arr addObject:self.firstImage];
         }
     }
-
+    
+    PhotoOrientation photoOrientation = PhotoOrientationPortrait;
+    if (self.firstImage.size.width > self.firstImage.size.height) {
+        photoOrientation = PhotoOrientationLandscape;
+    }
+    
     for (UIImage *img in self.photos) {
-        [arr addObject:img];
-        [arr addObject:img];
+        if (img.size.width < img.size.height && photoOrientation == PhotoOrientationPortrait) {
+            [arr addObject:img];
+            [arr addObject:img];
+        }
+        
+        if (img.size.width > img.size.height && photoOrientation == PhotoOrientationLandscape) {
+            [arr addObject:img];
+            [arr addObject:img];
+        }
     }
 
     self.photos = arr;
@@ -403,7 +420,7 @@ typedef enum {
 
 - (void)createPhoto {
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-        UIImage *photo = [self.photos objectAtIndex:0];
+        UIImage *photo = self.firstImage;
         NSData *photoData = UIImageJPEGRepresentation(photo, 0.0);
         NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:nil];
         NSURL *fileUrl = [documentsDirectoryURL URLByAppendingPathComponent:PHOTO_FILE_NAME];

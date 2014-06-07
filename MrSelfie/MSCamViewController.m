@@ -52,6 +52,11 @@ static int countDownNumber = 3;
 
 @property (nonatomic, strong) RBVolumeButtons *buttonStealer;
 
+// Tutorial
+@property (nonatomic, strong) IBOutlet UIImageView *tutorialImageView;
+@property (nonatomic) BOOL tutorialSwipeCompleted;
+@property (nonatomic) BOOL tutorialPressAndHoldCompleted;
+
 @end
 
 @implementation MSCamViewController
@@ -160,6 +165,8 @@ static int countDownNumber = 3;
 			[self setStillImageOutput:stillImageOutput];
 		}
 	});
+    
+    [self showTutorial];
     
     [[Mixpanel sharedInstance] track:@"OPENED_CAMERA"];
 }
@@ -386,6 +393,7 @@ static int countDownNumber = 3;
     [self stopTimer];
     [self stopCountDownTimer];
     [self snapStillImage];
+    [self setTutorialPressAndHoldComplete];
 }
 
 - (void)snapStillImage {
@@ -470,6 +478,7 @@ static int countDownNumber = 3;
                         completion:^(BOOL finished) {
                             completionBlock();
                         }];
+        [self setTutorialSwipeComplete];
     } else if (gestureRecognizer.direction == UISwipeGestureRecognizerDirectionDown) {
         [self cameraButtonPressed:self];
         [UIView transitionFromView:self.previewView
@@ -479,15 +488,18 @@ static int countDownNumber = 3;
                         completion:^(BOOL finished) {
                             completionBlock();
                         }];
+        [self setTutorialSwipeComplete];
     }
 }
 
 - (void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
         [self startCountDownTimer];
+        [self hideTutorialImageView];
     } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded || gestureRecognizer.state == UIGestureRecognizerStateCancelled) {
         [self.countDownLabel.layer removeAllAnimations];
         [self stopCountDownTimer];
+        [self showTutorialImageView];
     }
 }
 
@@ -711,6 +723,80 @@ static int countDownNumber = 3;
     UIImage* flippedImage = [UIImage imageWithCGImage:img.CGImage
                                                 scale:img.scale orientation:UIImageOrientationUpMirrored];
     return flippedImage;
+}
+
+#pragma mark - Tutorial
+
+- (void)showTutorial {
+    self.tutorialSwipeCompleted = YES;
+    self.tutorialPressAndHoldCompleted = YES;
+    
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+        self.tutorialSwipeCompleted = [[NSUserDefaults standardUserDefaults] boolForKey:@"tutorial-swipe"];
+        self.tutorialPressAndHoldCompleted = [[NSUserDefaults standardUserDefaults] boolForKey:@"tutorial-press-and-hold"];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (!self.tutorialSwipeCompleted) {
+                self.tutorialImageView.backgroundColor = [UIColor yellowColor]; // TODO set to Image
+            } else if (!self.tutorialPressAndHoldCompleted) {
+                self.tutorialImageView.backgroundColor = [UIColor blueColor]; // TODO set to Image
+            } else {
+                self.tutorialImageView.hidden = YES;
+            }
+        });
+    });
+}
+
+- (void)setTutorialSwipeComplete {
+    if (self.tutorialSwipeCompleted == YES) {
+        return;
+    }
+    
+    self.tutorialSwipeCompleted = YES;
+    
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+        [[NSUserDefaults standardUserDefaults] setObject:[[NSNumber alloc] initWithBool:YES] forKey:@"tutorial-swipe"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showTutorial];
+        });
+    });
+}
+
+- (void)setTutorialPressAndHoldComplete {
+    if (self.tutorialPressAndHoldCompleted == YES) {
+        return;
+    }
+    
+    self.tutorialPressAndHoldCompleted = YES;
+    
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+        [[NSUserDefaults standardUserDefaults] setObject:[[NSNumber alloc] initWithBool:YES] forKey:@"tutorial-press-and-hold"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showTutorial];
+        });
+    });
+    
+    [self showTutorial];
+}
+
+- (void)hideTutorialImageView {
+    if (self.tutorialPressAndHoldCompleted == YES) {
+        return;
+    }
+    
+    self.tutorialImageView.hidden = YES;
+}
+
+- (void)showTutorialImageView {
+    if (self.tutorialPressAndHoldCompleted == YES) {
+        return;
+    }
+    
+    self.tutorialImageView.hidden = NO;
 }
 
 @end

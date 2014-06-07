@@ -42,6 +42,7 @@ typedef enum {
 @property (nonatomic, strong) UIImage *firstImage;
 @property (nonatomic, strong) AVAssetWriter *videoWriter;
 @property (nonatomic) MediaTypeState mediaType;
+@property (nonatomic, strong) IBOutlet UIImageView *tutorialImageView;
 
 - (IBAction)share:(id)sender;
 - (IBAction)retake:(id)sender;

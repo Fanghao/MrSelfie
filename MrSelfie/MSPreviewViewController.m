@@ -71,6 +71,7 @@ typedef enum {
     self.segmentedControlBackgroundView.layer.cornerRadius = 3.5f;
 
     NSMutableArray *arr = [NSMutableArray array];
+    NSMutableArray *precisions = [NSMutableArray array];
 
     CGFloat alpha = 0.0f;
 
@@ -82,9 +83,10 @@ typedef enum {
             alpha += .2;
 
             [arr addObject:test];
+            [precisions addObject:[self.positions objectAtIndex:0]];
         } else {
-
             [arr addObject:self.firstImage];
+            [precisions addObject:[self.positions objectAtIndex:0]];
         }
     }
     
@@ -93,19 +95,27 @@ typedef enum {
         photoOrientation = PhotoOrientationLandscape;
     }
     
+    int i = 0;
     for (UIImage *img in self.photos) {
         if (img.size.width < img.size.height && photoOrientation == PhotoOrientationPortrait) {
             [arr addObject:img];
             [arr addObject:img];
+            [precisions addObject:[self.positions objectAtIndex:i]];
+            [precisions addObject:[self.positions objectAtIndex:i]];
         }
         
         if (img.size.width > img.size.height && photoOrientation == PhotoOrientationLandscape) {
             [arr addObject:img];
             [arr addObject:img];
+            [precisions addObject:[self.positions objectAtIndex:i]];
+            [precisions addObject:[self.positions objectAtIndex:i]];
         }
+        
+        i += 1;
     }
 
     self.photos = arr;
+    self.positions = precisions;
 
     self.currentIndex = self.photos.count - 1;
     [self showNextImage];
@@ -253,18 +263,33 @@ typedef enum {
 }
 
 - (void)showNextImage {
+    if (self.currentIndex < 0) {
+        [self performSelector:@selector(showNextImage) withObject:nil afterDelay:0.3];
+        return;
+    }
+    
     if (self.currentIndex <= 0 && self.mediaType == MediaTypeStatePhoto) {
         [self performSelector:@selector(showNextImage) withObject:nil afterDelay:0.3];
         return;
     }
     
-    if (self.currentIndex > 30 && self.currentIndex < 35) {
-        UIImage *image = [self.photos objectAtIndex:self.currentIndex];
-        UIImage* flippedImage = [UIImage imageWithCGImage:image.CGImage
-                                                    scale:image.scale orientation:UIImageOrientationUpMirrored];
-        [self.imageView setImage:flippedImage];
+    UIImage *image = [self.photos objectAtIndex:self.currentIndex];
+    UIImage* flippedImage = [UIImage imageWithCGImage:image.CGImage
+                                                scale:image.scale orientation:UIImageOrientationUpMirrored];
+    
+    if (self.currentIndex > 30 && self.currentIndex < 35) {        
+        if ([self isFlipped:self.currentIndex]) {
+            [self.imageView setImage:flippedImage];
+        } else {
+            [self.imageView setImage:image];
+        }
     } else {
-        [self.imageView setImage:[self.photos objectAtIndex:self.currentIndex]];
+        
+        if ([self isFlipped:self.currentIndex]) {
+            [self.imageView setImage:image];
+        } else {
+            [self.imageView setImage:flippedImage];
+        }
     }
     
     // reached the end of slideshow
@@ -519,7 +544,7 @@ typedef enum {
                 CVBufferRelease(buffer);
             }
             
-            buffer = [self pixelBufferFromCGImage:[img CGImage]];
+            buffer = [self pixelBufferFromCGImage:[img CGImage] flip:[self isFlipped:i]];
             
             BOOL append_ok = NO;
             int j = 0;
@@ -566,7 +591,7 @@ typedef enum {
     
 }
 
-- (CVPixelBufferRef) pixelBufferFromCGImage: (CGImageRef) image {
+- (CVPixelBufferRef) pixelBufferFromCGImage: (CGImageRef)image flip:(BOOL)flip {
     CGSize size = CGSizeMake(self.firstImage.size.width, self.firstImage.size.height);
     
     NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -594,9 +619,12 @@ typedef enum {
                                                  size.height, 8, 4*size.width, rgbColorSpace,
                                                  kCGImageAlphaPremultipliedFirst);
     
-    CGAffineTransform transform = CGAffineTransformMakeTranslation(size.width, 0.0);
-    transform = CGAffineTransformScale(transform, -1.0, 1.0);
-    CGContextConcatCTM(context, transform);
+    
+    if (flip) {
+        CGAffineTransform transform = CGAffineTransformMakeTranslation(size.width, 0.0);
+        transform = CGAffineTransformScale(transform, -1.0, 1.0);
+        CGContextConcatCTM(context, transform);
+    }
     
     //kCGImageAlphaNoneSkipFirst);
     CGContextConcatCTM(context, CGAffineTransformMakeRotation(0));
@@ -672,6 +700,15 @@ typedef enum {
 
 - (BOOL)prefersStatusBarHidden {
     return YES;
+}
+
+#pragma mark - Flipped or not
+
+- (BOOL)isFlipped:(int)index {
+    if ([[self.positions objectAtIndex:index] intValue] == 2) {
+        return YES;
+    }
+    return NO;
 }
 
 @end

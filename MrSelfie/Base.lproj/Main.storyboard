@@ -15,7 +15,13 @@
                             <view contentMode="scaleToFill" id="vU5-ch-bAs" userLabel="Placeholder View">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" red="1" green="0.75841338329999997" blue="0.30100935220000002" alpha="1" colorSpace="deviceRGB"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default.png" id="XGR-K5-QGw">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" id="z01-xY-XP1" customClass="MSCamPreviewView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -31,7 +37,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="6n5-xM-Vx9"/>
                     <connections>
-                        <outlet property="placeholderView" destination="vU5-ch-bAs" id="xaW-dI-FhM"/>
+                        <outlet property="placeholderView" destination="vU5-ch-bAs" id="z90-dh-KhC"/>
                         <outlet property="previewView" destination="z01-xY-XP1" id="s9S-T5-sTy"/>
                         <outlet property="tutorialImageView" destination="dGx-B8-OWP" id="PeR-HK-9VR"/>
                         <segue destination="PWB-Ch-ZNO" kind="custom" id="Mlo-vN-3Wm"/>
@@ -147,6 +153,7 @@
     </scenes>
     <resources>
         <image name="back_button.png" width="126" height="126"/>
+        <image name="default.png" width="320" height="480"/>
         <image name="upload_button.png" width="126" height="126"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

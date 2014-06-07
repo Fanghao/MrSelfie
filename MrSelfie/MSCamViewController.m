@@ -77,6 +77,9 @@ static int countDownNumber = 3;
 - (void)viewDidLoad {
 	[super viewDidLoad];
     
+//    NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
+//    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
+    
     self.countDownLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 100)];
     self.countDownLabel.center = self.view.center;
     self.countDownLabel.textAlignment = NSTextAlignmentCenter;
@@ -754,9 +757,11 @@ static int countDownNumber = 3;
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!self.tutorialSwipeCompleted) {
-                self.tutorialImageView.backgroundColor = [UIColor yellowColor]; // TODO set to Image
+                self.tutorialImageView.image = [UIImage imageNamed:@"tutorial_swipe.png"];
+                self.tutorialImageView.hidden = NO;
             } else if (!self.tutorialPressAndHoldCompleted) {
-                self.tutorialImageView.backgroundColor = [UIColor blueColor]; // TODO set to Image
+                self.tutorialImageView.image = [UIImage imageNamed:@"tutorial_press_and_hold.png"];
+                self.tutorialImageView.hidden = NO;
             } else {
                 self.tutorialImageView.hidden = YES;
             }

@@ -31,6 +31,8 @@
 		BDA24F55192C3C4D00135A4E /* UIImage+MPAverageColor.m in Sources */ = {isa = PBXBuildFile; fileRef = BDA24F42192C3C4D00135A4E /* UIImage+MPAverageColor.m */; };
 		BDA24F56192C3C4D00135A4E /* UIImage+MPImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = BDA24F44192C3C4D00135A4E /* UIImage+MPImageEffects.m */; };
 		BDA24F57192C3C4D00135A4E /* UIView+MPSnapshotImage.m in Sources */ = {isa = PBXBuildFile; fileRef = BDA24F46192C3C4D00135A4E /* UIView+MPSnapshotImage.m */; };
+		BDCD67901942B63F003A5568 /* tutorial_press_and_hold.png in Resources */ = {isa = PBXBuildFile; fileRef = BDCD678E1942B63F003A5568 /* tutorial_press_and_hold.png */; };
+		BDCD67911942B63F003A5568 /* tutorial_swipe.png in Resources */ = {isa = PBXBuildFile; fileRef = BDCD678F1942B63F003A5568 /* tutorial_swipe.png */; };
 		BDFD6D921925774E00D74AEF /* MSPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDFD6D911925774E00D74AEF /* MSPreviewViewController.m */; };
 		BDFD6D9519257C3E00D74AEF /* MSCamViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BDFD6D9419257C3E00D74AEF /* MSCamViewController.m */; };
 		BDFD6D9819257C4900D74AEF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BDFD6D9619257C4900D74AEF /* Main.storyboard */; };
@@ -105,6 +107,8 @@
 		BDA24F44192C3C4D00135A4E /* UIImage+MPImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+MPImageEffects.m"; sourceTree = "<group>"; };
 		BDA24F45192C3C4D00135A4E /* UIView+MPSnapshotImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MPSnapshotImage.h"; sourceTree = "<group>"; };
 		BDA24F46192C3C4D00135A4E /* UIView+MPSnapshotImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MPSnapshotImage.m"; sourceTree = "<group>"; };
+		BDCD678E1942B63F003A5568 /* tutorial_press_and_hold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tutorial_press_and_hold.png; path = images/tutorial_press_and_hold.png; sourceTree = "<group>"; };
+		BDCD678F1942B63F003A5568 /* tutorial_swipe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tutorial_swipe.png; path = images/tutorial_swipe.png; sourceTree = "<group>"; };
 		BDFD6D901925774E00D74AEF /* MSPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSPreviewViewController.h; sourceTree = "<group>"; };
 		BDFD6D911925774E00D74AEF /* MSPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSPreviewViewController.m; sourceTree = "<group>"; };
 		BDFD6D9319257C3E00D74AEF /* MSCamViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSCamViewController.h; sourceTree = "<group>"; };
@@ -210,6 +214,8 @@
 			isa = PBXGroup;
 			children = (
 				C18694BB1925C285003B9EE7 /* AppIcons */,
+				BDCD678E1942B63F003A5568 /* tutorial_press_and_hold.png */,
+				BDCD678F1942B63F003A5568 /* tutorial_swipe.png */,
 				BD415FDD19428A6400B70F20 /* back_button.png */,
 				BD415FDE19428A6400B70F20 /* upload_button.png */,
 				C18694B41925C064003B9EE7 /* LaunchImages */,
@@ -428,6 +434,7 @@
 				C18694CC1925C285003B9EE7 /* Icon.png in Resources */,
 				BDFD6D9819257C4900D74AEF /* Main.storyboard in Resources */,
 				BDA24F47192C3C4D00135A4E /* Media.xcassets in Resources */,
+				BDCD67901942B63F003A5568 /* tutorial_press_and_hold.png in Resources */,
 				BD415FE019428A6400B70F20 /* upload_button.png in Resources */,
 				C18694B81925C064003B9EE7 /* default-568h@2x.png in Resources */,
 				C13377B21925701C0067F20E /* InfoPlist.strings in Resources */,
@@ -435,6 +442,7 @@
 				C13377BA1925701C0067F20E /* Images.xcassets in Resources */,
 				C18694B91925C064003B9EE7 /* default.png in Resources */,
 				BDA24F4A192C3C4D00135A4E /* MPCloseBtn@2x.png in Resources */,
+				BDCD67911942B63F003A5568 /* tutorial_swipe.png in Resources */,
 				C18694BA1925C064003B9EE7 /* default@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

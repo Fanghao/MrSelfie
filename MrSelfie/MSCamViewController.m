@@ -22,13 +22,15 @@
 static void * CapturingStillImageContext = &CapturingStillImageContext;
 static void * SessionRunningAndDeviceAuthorizedContext = &SessionRunningAndDeviceAuthorizedContext;
 static SystemSoundID soundID = 0;
+static int countDownNumber = 3;
 
 @interface MSCamViewController ()
 
 @property (strong, nonatomic) IBOutlet UIView *stillButtonView;
-@property (strong, nonatomic) IBOutlet UIButton *stillButton;
-@property (strong, nonatomic) IBOutlet UIButton *cameraButton;
 @property (strong, nonatomic) IBOutlet MSCamPreviewView *previewView;
+@property (strong, nonatomic) IBOutlet UIView *placeholderView;
+
+@property (strong, nonatomic) UILabel *countDownLabel;
 
 // Session management.
 @property (nonatomic) dispatch_queue_t sessionQueue; // Communicate with the session and other session objects on this queue.
@@ -45,6 +47,7 @@ static SystemSoundID soundID = 0;
 
 @property (nonatomic, strong) NSMutableArray *imageArrays;
 @property (nonatomic, strong) NSTimer *timer;
+@property (nonatomic, strong) NSTimer *countDownTimer;
 @property (nonatomic) BOOL isUserTapped;
 
 @property (nonatomic, strong) RBVolumeButtons *buttonStealer;
@@ -67,6 +70,16 @@ static SystemSoundID soundID = 0;
 - (void)viewDidLoad {
 	[super viewDidLoad];
     
+    self.countDownLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 100)];
+    self.countDownLabel.center = self.view.center;
+    self.countDownLabel.textAlignment = NSTextAlignmentCenter;
+    self.countDownLabel.textColor = [UIColor whiteColor];
+    self.countDownLabel.shadowColor = [UIColor blackColor];
+    self.countDownLabel.shadowOffset = CGSizeMake(0, -1.0);
+    self.countDownLabel.font = [UIFont systemFontOfSize:120];
+    self.countDownLabel.hidden = YES;
+    [self.previewView addSubview:self.countDownLabel];
+    
     self.navigationController.navigationBar.hidden = YES;
     self.imageArrays = [NSMutableArray arrayWithCapacity:ImageCapacity];
     
@@ -81,10 +94,24 @@ static SystemSoundID soundID = 0;
 	[self setSession:session];
 	
 	// Setup the preview view
+//    [[self previewView] setup];
 	[[self previewView] setSession:session];
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(focusAndExposeTap:)];
     [[self previewView] addGestureRecognizer:tapGesture];
-	
+    
+    UISwipeGestureRecognizer *swipeUpGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(flipView:)];
+    swipeUpGesture.direction = UISwipeGestureRecognizerDirectionUp;
+    [[self previewView] addGestureRecognizer:swipeUpGesture];
+    
+    UISwipeGestureRecognizer *swipeDownGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(flipView:)];
+    swipeDownGesture.direction = UISwipeGestureRecognizerDirectionDown;
+    [[self previewView] addGestureRecognizer:swipeDownGesture];
+    
+    UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    longPressGesture.minimumPressDuration = 0.2;
+    longPressGesture.allowableMovement = 20;
+    [[self previewView] addGestureRecognizer:longPressGesture];
+    
 	// Check for device authorization
 	[self checkDeviceAuthorizationStatus];
 	
@@ -142,7 +169,6 @@ static SystemSoundID soundID = 0;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(becomeActiveFromBackground) name:@"DID_BECOME_ACTIVE" object:nil];
     
     [self createShutterSound];
-    self.stillButton.enabled = YES;
 
     if (!self.buttonStealer) {
         self.buttonStealer = [[RBVolumeButtons alloc] init];
@@ -210,6 +236,7 @@ static SystemSoundID soundID = 0;
 - (void)becomeInactive {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [self stopTimer];
+    [self stopCountDownTimer];
     [self.imageArrays removeAllObjects];
 }
 
@@ -230,6 +257,16 @@ static SystemSoundID soundID = 0;
 	return YES;
 }
 
+- (void)startCountDownTimer {
+    countDownNumber = 3;
+    self.countDownTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(countDownAnimation) userInfo:nil repeats:YES];
+}
+
+- (void)stopCountDownTimer {
+    [self.countDownTimer invalidate];
+    self.countDownTimer = nil;
+}
+
 #pragma mark - rotation
 
 - (BOOL)shouldAutorotate {
@@ -244,10 +281,12 @@ static SystemSoundID soundID = 0;
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     [UIView setAnimationsEnabled:NO];
 	[[(AVCaptureVideoPreviewLayer *)[[self previewView] layer] connection] setVideoOrientation:(AVCaptureVideoOrientation)toInterfaceOrientation];
+    NSLog(@"frame: %@", NSStringFromCGRect(self.placeholderView.bounds));
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [UIView setAnimationsEnabled:YES];
+    NSLog(@"frame 1: %@", NSStringFromCGRect(self.placeholderView.bounds));
 }
 
 - (void)orientationChanged {
@@ -282,24 +321,7 @@ static SystemSoundID soundID = 0;
 			[self runStillImageCaptureAnimation];
 		}
 	}
-	else if (context == SessionRunningAndDeviceAuthorizedContext)
-	{
-		BOOL isRunning = [change[NSKeyValueChangeNewKey] boolValue];
-		
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if (isRunning)
-			{
-				[[self cameraButton] setEnabled:YES];
-				[[self stillButton] setEnabled:YES];
-			}
-			else
-			{
-				[[self cameraButton] setEnabled:NO];
-				[[self stillButton] setEnabled:NO];
-			}
-		});
-	}
-	else
+	else if (context != SessionRunningAndDeviceAuthorizedContext)
 	{
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 	}
@@ -308,9 +330,6 @@ static SystemSoundID soundID = 0;
 #pragma mark IBActions
 
 - (IBAction)cameraButtonPressed:(id)sender {
-	[[self cameraButton] setEnabled:NO];
-	[[self stillButton] setEnabled:NO];
-	
 	dispatch_async([self sessionQueue], ^{
 		AVCaptureDevice *currentVideoDevice = [[self videoDeviceInput] device];
 		AVCaptureDevicePosition preferredPosition = AVCaptureDevicePositionUnspecified;
@@ -351,11 +370,6 @@ static SystemSoundID soundID = 0;
 		}
 		
 		[[self session] commitConfiguration];
-		
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[[self cameraButton] setEnabled:YES];
-			[[self stillButton] setEnabled:YES];
-		});
 	});
 }
 
@@ -369,8 +383,8 @@ static SystemSoundID soundID = 0;
 
 - (IBAction)stillButtonPressed:(id)sender {
     self.isUserTapped = YES;
-    self.stillButton.enabled = NO;
     [self stopTimer];
+    [self stopCountDownTimer];
     [self snapStillImage];
 }
 
@@ -423,9 +437,89 @@ static SystemSoundID soundID = 0;
 	});
 }
 
+#pragma mark - Gestures
+
 - (IBAction)focusAndExposeTap:(UIGestureRecognizer *)gestureRecognizer {
 	CGPoint devicePoint = [(AVCaptureVideoPreviewLayer *)[[self previewView] layer] captureDevicePointOfInterestForPoint:[gestureRecognizer locationInView:[gestureRecognizer view]]];
 	[self focusWithMode:AVCaptureFocusModeAutoFocus exposeWithMode:AVCaptureExposureModeAutoExpose atDevicePoint:devicePoint monitorSubjectAreaChange:YES];
+}
+
+- (IBAction)flipView:(UISwipeGestureRecognizer *)gestureRecognizer {
+    [self setLockInterfaceRotation:YES];
+    self.previewView.frame = self.view.frame;
+    self.placeholderView.frame = self.view.frame;
+    
+    void(^completionBlock)(void) = ^void(void) {
+        [UIView transitionFromView:self.placeholderView
+                            toView:self.previewView
+                          duration:0.0
+                           options:UIViewAnimationOptionTransitionFlipFromTop
+                        completion:^(BOOL finished) {
+                            [self setLockInterfaceRotation:NO];
+                            self.previewView.frame = self.view.frame;
+                            self.placeholderView.frame = self.view.frame;
+                        }];
+    };
+    
+    if (gestureRecognizer.direction == UISwipeGestureRecognizerDirectionUp) {
+        [self cameraButtonPressed:self];
+        [UIView transitionFromView:self.previewView
+                            toView:self.placeholderView
+                          duration:0.8
+                           options:UIViewAnimationOptionTransitionFlipFromTop
+                        completion:^(BOOL finished) {
+                            completionBlock();
+                        }];
+    } else if (gestureRecognizer.direction == UISwipeGestureRecognizerDirectionDown) {
+        [self cameraButtonPressed:self];
+        [UIView transitionFromView:self.previewView
+                            toView:self.placeholderView
+                          duration:0.8
+                           options:UIViewAnimationOptionTransitionFlipFromBottom
+                        completion:^(BOOL finished) {
+                            completionBlock();
+                        }];
+    }
+}
+
+- (void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer {
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        [self startCountDownTimer];
+    } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded || gestureRecognizer.state == UIGestureRecognizerStateCancelled) {
+        [self.countDownLabel.layer removeAllAnimations];
+        [self stopCountDownTimer];
+    }
+}
+
+- (void)countDownAnimation {
+    self.countDownLabel.hidden = NO;
+    self.countDownLabel.text = [NSString stringWithFormat:@"%d", countDownNumber];
+    if (countDownNumber < 1) {
+        return;
+    }
+    self.countDownLabel.transform = CGAffineTransformMakeScale(0.2, 0.2);
+    [UIView animateWithDuration:0.5
+                          delay:0
+         usingSpringWithDamping:0.8
+          initialSpringVelocity:10
+                        options:0
+                     animations:^{
+                         self.countDownLabel.alpha = 0.5;
+                         self.countDownLabel.alpha = 1.0;
+                         self.countDownLabel.transform = CGAffineTransformMakeScale(1.0, 1.0);}
+                     completion:^(BOOL finished) {
+                         [UIView animateWithDuration:0.4 animations:^{
+                             self.countDownLabel.alpha = 0.0;
+                             self.countDownLabel.alpha = 0.0;
+                             self.countDownLabel.transform = CGAffineTransformMakeScale(0.2, 0.2);
+                         } completion:^(BOOL finished) {
+                             countDownNumber--;
+                             if (countDownNumber < 1) {
+                                 self.countDownLabel.hidden = YES;
+                                 [self stillButtonPressed:self];
+                             }
+                         }];
+                     }];
 }
 
 - (void)subjectAreaDidChange:(NSNotification *)notification {
@@ -498,9 +592,12 @@ static SystemSoundID soundID = 0;
 - (void)runStillImageCaptureAnimation {
 	dispatch_async(dispatch_get_main_queue(), ^{
 		[[[self previewView] layer] setOpacity:0.0];
+        [[self placeholderView] setHidden:YES];
 		[UIView animateWithDuration:1 animations:^{
 			[[[self previewView] layer] setOpacity:1.0];
-		}];
+		} completion:^(BOOL finished) {
+            [[self placeholderView] setHidden:NO];
+        }];
 	});
 }
 

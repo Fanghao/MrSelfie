@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="cTr-T3-3Qc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="cTr-T3-3Qc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -12,38 +12,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <view contentMode="scaleToFill" id="Ge2-wJ-1e1" customClass="MSCamPreviewView">
+                            <view contentMode="scaleToFill" id="vU5-ch-bAs" userLabel="Placeholder View">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" id="DW7-sR-5oC">
-                                        <rect key="frame" x="0.0" y="478" width="320" height="90"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ruD-Sw-irU">
-                                                <rect key="frame" x="125" y="0.0" width="70" height="90"/>
-                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                                <state key="normal" image="button_camera_mrselfie.png">
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="stillButtonPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="KgN-Oj-xuO"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
-                                    </view>
-                                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="gvT-AD-CHh">
-                                        <rect key="frame" x="233" y="14" width="67" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Switch">
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="cameraButtonPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="cEz-KN-Csf"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
+                                <color key="backgroundColor" red="1" green="0.75841338329999997" blue="0.30100935220000002" alpha="1" colorSpace="deviceRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" id="z01-xY-XP1" customClass="MSCamPreviewView">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
@@ -51,10 +27,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="6n5-xM-Vx9"/>
                     <connections>
-                        <outlet property="cameraButton" destination="gvT-AD-CHh" id="f9W-HJ-oly"/>
-                        <outlet property="previewView" destination="Ge2-wJ-1e1" id="yuA-VR-lkm"/>
-                        <outlet property="stillButton" destination="ruD-Sw-irU" id="qBY-ye-MMX"/>
-                        <outlet property="stillButtonView" destination="DW7-sR-5oC" id="Qfm-GN-lc2"/>
+                        <outlet property="placeholderView" destination="vU5-ch-bAs" id="xaW-dI-FhM"/>
+                        <outlet property="previewView" destination="z01-xY-XP1" id="s9S-T5-sTy"/>
                         <segue destination="PWB-Ch-ZNO" kind="custom" id="Mlo-vN-3Wm"/>
                     </connections>
                 </viewController>
@@ -135,7 +109,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="button_camera_mrselfie.png" width="70" height="90"/>
         <image name="button_share_mrselfie.png" width="85" height="90"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

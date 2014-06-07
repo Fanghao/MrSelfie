@@ -46,9 +46,11 @@ static int countDownNumber = 3;
 @property (nonatomic) id runtimeErrorHandlingObserver;
 
 @property (nonatomic, strong) NSMutableArray *imageArrays;
+@property (nonatomic, strong) NSMutableArray *positionArrays;
 @property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, strong) NSTimer *countDownTimer;
 @property (nonatomic) BOOL isUserTapped;
+@property (nonatomic) AVCaptureDevicePosition currentPosition;
 
 @property (nonatomic, strong) RBVolumeButtons *buttonStealer;
 
@@ -87,6 +89,7 @@ static int countDownNumber = 3;
     
     self.navigationController.navigationBar.hidden = YES;
     self.imageArrays = [NSMutableArray arrayWithCapacity:ImageCapacity];
+    self.positionArrays = [NSMutableArray arrayWithCapacity:ImageCapacity];
     
     [self orientationChanged];
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
@@ -134,6 +137,7 @@ static int countDownNumber = 3;
 		
 		AVCaptureDevice *videoDevice = [MSCamViewController deviceWithMediaType:AVMediaTypeVideo preferringPosition:AVCaptureDevicePositionFront];
 		AVCaptureDeviceInput *videoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:videoDevice error:&error];
+        self.currentPosition = [videoDevice position];
 		
 		if (error)
 		{
@@ -245,6 +249,7 @@ static int countDownNumber = 3;
     [self stopTimer];
     [self stopCountDownTimer];
     [self.imageArrays removeAllObjects];
+    [self.positionArrays removeAllObjects];
 }
 
 #pragma mark - timer
@@ -340,6 +345,7 @@ static int countDownNumber = 3;
 		AVCaptureDevice *currentVideoDevice = [[self videoDeviceInput] device];
 		AVCaptureDevicePosition preferredPosition = AVCaptureDevicePositionUnspecified;
 		AVCaptureDevicePosition currentPosition = [currentVideoDevice position];
+        self.currentPosition = currentPosition;
 		
 		switch (currentPosition)
 		{
@@ -418,10 +424,12 @@ static int countDownNumber = 3;
 				NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
 				UIImage *image = [[UIImage alloc] initWithData:imageData];
                 [self.imageArrays insertObject:image atIndex:0];
+                [self.positionArrays insertObject:@(self.currentPosition) atIndex:0];
                 if (self.imageArrays.count > ImageCapacity) {
                     UIImage *lastImage = [self.imageArrays lastObject];
                     [self.imageArrays removeLastObject];
                     lastImage = nil;
+                    [self.positionArrays removeLastObject];
                 }
                 
                 if (self.isUserTapped) {
@@ -432,9 +440,11 @@ static int countDownNumber = 3;
                         [self.imageArrays replaceObjectAtIndex:i withObject:orientedImage];
                     }
                     [previewVC setPhotos:self.imageArrays];
+                    [previewVC setPositions:self.positionArrays];
                     __weak __typeof(self) weakSelf = self;
                     [self.navigationController presentViewController:previewVC animated:NO completion:^{
                         [weakSelf.imageArrays removeAllObjects];
+                        [weakSelf.positionArrays removeAllObjects];
                     }];
                 }
 //                // TODO: remove

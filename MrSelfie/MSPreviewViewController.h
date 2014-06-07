@@ -11,5 +11,6 @@
 @interface MSPreviewViewController : UIViewController 
 
 @property (nonatomic, strong) NSArray *photos;
+@property (nonatomic, strong) NSArray *positions;
 
 @end

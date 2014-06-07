@@ -12,6 +12,7 @@
 #import <ImageIO/ImageIO.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <AVFoundation/AVFoundation.h>
+#import <QuartzCore/QuartzCore.h>
 
 static NSString *const GIF_FILE_NAME = @"animated.gif";
 static NSString *const PHOTO_FILE_NAME = @"shots.jpg";
@@ -29,6 +30,7 @@ typedef enum {
 @interface MSPreviewViewController ()
 
 @property (nonatomic, strong) IBOutlet UISegmentedControl *mediaTypeSegmentedControl;
+@property (nonatomic, strong) IBOutlet UIView *segmentedControlBackgroundView;
 @property (nonatomic, strong) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) IBOutlet UIView *buttonContainerView;
 @property (nonatomic, strong) IBOutlet UIView *segmentControlContainer;
@@ -65,6 +67,7 @@ typedef enum {
     self.mediaType = MediaTypeStateVideo;
     self.videoUrl = nil;
     self.firstImage = [self.photos objectAtIndex:0];
+    self.segmentedControlBackgroundView.layer.cornerRadius = 3.5f;
 
     NSMutableArray *arr = [NSMutableArray array];
 

@@ -67,44 +67,46 @@
                                 <rect key="frame" x="0.0" y="478" width="320" height="90"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Rdp-PG-3AH">
-                                        <rect key="frame" x="122" y="0.0" width="85" height="90"/>
+                                    <button opaque="NO" alpha="0.69999999999999996" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Rdp-PG-3AH">
+                                        <rect key="frame" x="13" y="13" width="63" height="63"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                        <state key="normal" image="button_share_mrselfie.png">
+                                        <state key="normal" image="back_button.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="share:" destination="PWB-Ch-ZNO" eventType="touchUpInside" id="njq-T0-27v"/>
+                                            <action selector="retake:" destination="PWB-Ch-ZNO" eventType="touchUpInside" id="pmb-cZ-ueC"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="cHU-hp-N0i">
-                                        <rect key="frame" x="215" y="35" width="114" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMinY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                        <size key="titleShadowOffset" width="1" height="1"/>
-                                        <state key="normal" title="Retake">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                            <color key="titleShadowColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    <button opaque="NO" alpha="0.69999999999999996" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="vJc-LC-TbP">
+                                        <rect key="frame" x="244" y="13" width="63" height="63"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                        <state key="normal" image="upload_button.png">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="retake:" destination="PWB-Ch-ZNO" eventType="touchUpInside" id="D1D-nk-AkD"/>
+                                            <action selector="share:" destination="PWB-Ch-ZNO" eventType="touchUpInside" id="tqP-N1-dfC"/>
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" id="fV2-L5-up3">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="54"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="SRS-dp-aFK">
-                                        <rect key="frame" x="99" y="12" width="123" height="29"/>
+                                    <view alpha="0.69999999999999996" contentMode="scaleToFill" id="K2G-m5-zgy">
+                                        <rect key="frame" x="99" y="14" width="123" height="29"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    </view>
+                                    <segmentedControl opaque="NO" alpha="0.69999999999999996" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="SRS-dp-aFK">
+                                        <rect key="frame" x="99" y="14" width="123" height="29"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <segments>
                                             <segment title="Video"/>
                                             <segment title="Photo"/>
                                         </segments>
-                                        <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="tintColor" red="0.77299608720000001" green="0.018179187709999999" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <action selector="mediaTypeSwitched:" destination="PWB-Ch-ZNO" eventType="valueChanged" id="PV7-zO-FWv"/>
                                         </connections>
@@ -124,15 +126,18 @@
                         <outlet property="imageView" destination="QDe-GH-OAN" id="wCw-lS-60g"/>
                         <outlet property="mediaTypeSegmentedControl" destination="SRS-dp-aFK" id="6Xj-Aa-uJI"/>
                         <outlet property="segmentControlContainer" destination="fV2-L5-up3" id="USD-KL-7KD"/>
+                        <outlet property="segmentedControlBackgroundView" destination="K2G-m5-zgy" id="88Q-nx-yuH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hBx-VJ-QZS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="917" y="603"/>
+            <point key="canvasLocation" x="1335" y="431"/>
         </scene>
     </scenes>
     <resources>
-        <image name="button_share_mrselfie.png" width="85" height="90"/>
+        <image name="back_button.png" width="126" height="126"/>
+        <image name="button_camera_mrselfie.png" width="70" height="90"/>
+        <image name="upload_button.png" width="126" height="126"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

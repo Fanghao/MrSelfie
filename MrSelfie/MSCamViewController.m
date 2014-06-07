@@ -259,6 +259,7 @@ static int countDownNumber = 3;
 
 - (void)startCountDownTimer {
     countDownNumber = 3;
+    [self countDownAnimation];
     self.countDownTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(countDownAnimation) userInfo:nil repeats:YES];
 }
 

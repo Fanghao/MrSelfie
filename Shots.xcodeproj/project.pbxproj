@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BD415FDF19428A6400B70F20 /* back_button.png in Resources */ = {isa = PBXBuildFile; fileRef = BD415FDD19428A6400B70F20 /* back_button.png */; };
+		BD415FE019428A6400B70F20 /* upload_button.png in Resources */ = {isa = PBXBuildFile; fileRef = BD415FDE19428A6400B70F20 /* upload_button.png */; };
 		BD7DD1D1192C729E0051B91C /* RBVolumeButtons.m in Sources */ = {isa = PBXBuildFile; fileRef = BD7DD1D0192C729E0051B91C /* RBVolumeButtons.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		BD7DD1D3192C73540051B91C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD7DD1D2192C73540051B91C /* MediaPlayer.framework */; };
 		BD7DD1D5192C73640051B91C /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD7DD1D4192C73640051B91C /* AudioToolbox.framework */; };
@@ -69,6 +71,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BD415FDD19428A6400B70F20 /* back_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = back_button.png; path = images/back_button.png; sourceTree = "<group>"; };
+		BD415FDE19428A6400B70F20 /* upload_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = upload_button.png; path = images/upload_button.png; sourceTree = "<group>"; };
 		BD7DD1CF192C729E0051B91C /* RBVolumeButtons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RBVolumeButtons.h; sourceTree = "<group>"; };
 		BD7DD1D0192C729E0051B91C /* RBVolumeButtons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RBVolumeButtons.m; sourceTree = "<group>"; };
 		BD7DD1D2192C73540051B91C /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -212,6 +216,8 @@
 				C18694BB1925C285003B9EE7 /* AppIcons */,
 				C18694AF19259792003B9EE7 /* button_camera_mrselfie@2x.png */,
 				C18694B019259792003B9EE7 /* button_share_mrselfie@2x.png */,
+				BD415FDD19428A6400B70F20 /* back_button.png */,
+				BD415FDE19428A6400B70F20 /* upload_button.png */,
 				C18694B41925C064003B9EE7 /* LaunchImages */,
 			);
 			name = Images;
@@ -389,7 +395,7 @@
 				ORGANIZATIONNAME = MSStorm8;
 				TargetAttributes = {
 					C13377A31925701C0067F20E = {
-						DevelopmentTeam = Y66H5H8W8W;
+						DevelopmentTeam = X77LDY7Z5E;
 					};
 					C13377BE1925701C0067F20E = {
 						TestTargetID = C13377A31925701C0067F20E;
@@ -420,6 +426,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD415FDF19428A6400B70F20 /* back_button.png in Resources */,
 				BDA24F4C192C3C4D00135A4E /* MPNotification.storyboard in Resources */,
 				C18694CD1925C285003B9EE7 /* Icon@2x.png in Resources */,
 				C18694B119259792003B9EE7 /* button_camera_mrselfie@2x.png in Resources */,
@@ -429,6 +436,7 @@
 				C18694CC1925C285003B9EE7 /* Icon.png in Resources */,
 				BDFD6D9819257C4900D74AEF /* Main.storyboard in Resources */,
 				BDA24F47192C3C4D00135A4E /* Media.xcassets in Resources */,
+				BD415FE019428A6400B70F20 /* upload_button.png in Resources */,
 				C18694B81925C064003B9EE7 /* default-568h@2x.png in Resources */,
 				C13377B21925701C0067F20E /* InfoPlist.strings in Resources */,
 				BDA24F49192C3C4D00135A4E /* MPCloseBtn.png in Resources */,

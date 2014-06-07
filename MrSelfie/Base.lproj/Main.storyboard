@@ -27,7 +27,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="6n5-xM-Vx9"/>
                     <connections>
-                        <outlet property="placeholderView" destination="vU5-ch-bAs" id="xaW-dI-FhM"/>
+                        <outlet property="placeholderView" destination="vU5-ch-bAs" id="z90-dh-KhC"/>
                         <outlet property="previewView" destination="z01-xY-XP1" id="s9S-T5-sTy"/>
                         <segue destination="PWB-Ch-ZNO" kind="custom" id="Mlo-vN-3Wm"/>
                     </connections>
@@ -136,7 +136,6 @@
     </scenes>
     <resources>
         <image name="back_button.png" width="126" height="126"/>
-        <image name="button_camera_mrselfie.png" width="70" height="90"/>
         <image name="upload_button.png" width="126" height="126"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

@@ -75,7 +75,7 @@ static int countDownNumber = 3;
     self.countDownLabel.textAlignment = NSTextAlignmentCenter;
     self.countDownLabel.textColor = [UIColor whiteColor];
     self.countDownLabel.shadowColor = [UIColor blackColor];
-    self.countDownLabel.shadowOffset = CGSizeMake(0, -1.0);
+    self.countDownLabel.shadowOffset = CGSizeMake(0, 3.0);
     self.countDownLabel.font = [UIFont systemFontOfSize:120];
     self.countDownLabel.hidden = YES;
     [self.previewView addSubview:self.countDownLabel];
@@ -281,12 +281,10 @@ static int countDownNumber = 3;
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     [UIView setAnimationsEnabled:NO];
 	[[(AVCaptureVideoPreviewLayer *)[[self previewView] layer] connection] setVideoOrientation:(AVCaptureVideoOrientation)toInterfaceOrientation];
-    NSLog(@"frame: %@", NSStringFromCGRect(self.placeholderView.bounds));
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [UIView setAnimationsEnabled:YES];
-    NSLog(@"frame 1: %@", NSStringFromCGRect(self.placeholderView.bounds));
 }
 
 - (void)orientationChanged {
@@ -465,7 +463,7 @@ static int countDownNumber = 3;
         [self cameraButtonPressed:self];
         [UIView transitionFromView:self.previewView
                             toView:self.placeholderView
-                          duration:0.8
+                          duration:0.5
                            options:UIViewAnimationOptionTransitionFlipFromTop
                         completion:^(BOOL finished) {
                             completionBlock();
@@ -474,7 +472,7 @@ static int countDownNumber = 3;
         [self cameraButtonPressed:self];
         [UIView transitionFromView:self.previewView
                             toView:self.placeholderView
-                          duration:0.8
+                          duration:0.5
                            options:UIViewAnimationOptionTransitionFlipFromBottom
                         completion:^(BOOL finished) {
                             completionBlock();
@@ -484,6 +482,14 @@ static int countDownNumber = 3;
 
 - (void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        CGPoint touchLocation = [gestureRecognizer locationInView:self.view];
+        if (touchLocation.y > self.view.frame.size.height / 2) {
+            // bottom part;
+            self.countDownLabel.center = CGPointMake(touchLocation.x, touchLocation.y - 100);
+        } else {
+            // upper part
+            self.countDownLabel.center = CGPointMake(touchLocation.x, touchLocation.y + 120);
+        }
         [self startCountDownTimer];
     } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded || gestureRecognizer.state == UIGestureRecognizerStateCancelled) {
         [self.countDownLabel.layer removeAllAnimations];

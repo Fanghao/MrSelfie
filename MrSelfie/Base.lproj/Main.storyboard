@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="cTr-T3-3Qc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="12F45" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="cTr-T3-3Qc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -28,6 +28,10 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <imageView userInteractionEnabled="NO" alpha="0.5" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="dGx-B8-OWP">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -35,11 +39,13 @@
                     <connections>
                         <outlet property="placeholderView" destination="vU5-ch-bAs" id="z90-dh-KhC"/>
                         <outlet property="previewView" destination="z01-xY-XP1" id="s9S-T5-sTy"/>
+                        <outlet property="tutorialImageView" destination="dGx-B8-OWP" id="PeR-HK-9VR"/>
                         <segue destination="PWB-Ch-ZNO" kind="custom" id="Mlo-vN-3Wm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="278" y="-85"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="cIz-ZB-BGX">
@@ -68,6 +74,10 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="0Kz-Ww-jL2">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <view contentMode="scaleToFill" id="FMB-DH-fYy">
                                 <rect key="frame" x="0.0" y="478" width="320" height="90"/>
@@ -133,6 +143,7 @@
                         <outlet property="mediaTypeSegmentedControl" destination="SRS-dp-aFK" id="6Xj-Aa-uJI"/>
                         <outlet property="segmentControlContainer" destination="fV2-L5-up3" id="USD-KL-7KD"/>
                         <outlet property="segmentedControlBackgroundView" destination="K2G-m5-zgy" id="88Q-nx-yuH"/>
+                        <outlet property="tutorialImageView" destination="0Kz-Ww-jL2" id="Nbp-hq-KKI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hBx-VJ-QZS" userLabel="First Responder" sceneMemberID="firstResponder"/>

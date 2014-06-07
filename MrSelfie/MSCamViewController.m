@@ -260,7 +260,7 @@ static int countDownNumber = 3;
 - (void)startCountDownTimer {
     countDownNumber = 3;
     [self countDownAnimation];
-    self.countDownTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(countDownAnimation) userInfo:nil repeats:YES];
+    self.countDownTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(countDownAnimation) userInfo:nil repeats:YES];
 }
 
 - (void)stopCountDownTimer {
@@ -505,7 +505,7 @@ static int countDownNumber = 3;
         return;
     }
     self.countDownLabel.transform = CGAffineTransformMakeScale(0.2, 0.2);
-    [UIView animateWithDuration:0.5
+    [UIView animateWithDuration:0.3
                           delay:0
          usingSpringWithDamping:0.8
           initialSpringVelocity:10
@@ -515,7 +515,7 @@ static int countDownNumber = 3;
                          self.countDownLabel.alpha = 1.0;
                          self.countDownLabel.transform = CGAffineTransformMakeScale(1.0, 1.0);}
                      completion:^(BOOL finished) {
-                         [UIView animateWithDuration:0.4 animations:^{
+                         [UIView animateWithDuration:0.1 animations:^{
                              self.countDownLabel.alpha = 0.0;
                              self.countDownLabel.alpha = 0.0;
                              self.countDownLabel.transform = CGAffineTransformMakeScale(0.2, 0.2);

@@ -443,7 +443,8 @@ static int countDownNumber = 3;
                     MSPreviewViewController *previewVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MSPreviewViewController"];
                     for (int i = 0; i < self.imageArrays.count; i++) {
                         UIImage *image = (UIImage *)self.imageArrays[i];
-                        UIImage *orientedImage = [self fixOrientationOfImage:image];
+                        BOOL needsExtraFlip = [self.positionArrays[i] intValue] == AVCaptureDevicePositionFront;
+                        UIImage *orientedImage = [self fixOrientationOfImage:image withExtraFlip:needsExtraFlip];
                         [self.imageArrays replaceObjectAtIndex:i withObject:orientedImage];
                     }
                     [previewVC setPhotos:self.imageArrays];
@@ -663,13 +664,17 @@ static int countDownNumber = 3;
 
 #pragma mark - Image Orientation
 
-- (UIImage *)fixOrientationOfImage:(UIImage *)image {
+- (UIImage *)fixOrientationOfImage:(UIImage *)image withExtraFlip:(BOOL)needsExtraFlip{
     
     // No-op if the orientation is already correct
     if (image.imageOrientation == UIImageOrientationUp) {
-        UIImage* flippedImage = [UIImage imageWithCGImage:image.CGImage
-                                                    scale:image.scale orientation:UIImageOrientationUpMirrored];
-        return flippedImage;
+        if (needsExtraFlip) {
+            UIImage* flippedImage = [UIImage imageWithCGImage:image.CGImage
+                                                        scale:image.scale orientation:UIImageOrientationUpMirrored];
+            return flippedImage;
+        } else {
+            return image;
+        }
     }
     
     // We need to calculate the proper transformation to make the image upright.
@@ -744,9 +749,14 @@ static int countDownNumber = 3;
     UIImage *img = [UIImage imageWithCGImage:cgimg];
     CGContextRelease(ctx);
     CGImageRelease(cgimg);
-    UIImage* flippedImage = [UIImage imageWithCGImage:img.CGImage
-                                                scale:img.scale orientation:UIImageOrientationUpMirrored];
-    return flippedImage;
+    if (needsExtraFlip) {
+        UIImage* flippedImage = [UIImage imageWithCGImage:img.CGImage
+                                                    scale:img.scale orientation:UIImageOrientationUpMirrored];
+        return flippedImage;
+    }
+    else {
+        return img;
+    }
 }
 
 #pragma mark - Tutorial

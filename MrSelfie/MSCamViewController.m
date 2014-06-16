@@ -119,9 +119,12 @@ static int countDownNumber = 3;
     [[self previewView] addGestureRecognizer:swipeDownGesture];
     
     UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
-    longPressGesture.minimumPressDuration = 0.2;
+    longPressGesture.minimumPressDuration = 0.1;
     longPressGesture.allowableMovement = 20;
     [[self previewView] addGestureRecognizer:longPressGesture];
+    
+    [swipeUpGesture requireGestureRecognizerToFail:longPressGesture];
+    [swipeDownGesture requireGestureRecognizerToFail:longPressGesture];
     
 	// Check for device authorization
 	[self checkDeviceAuthorizationStatus];
@@ -373,7 +376,7 @@ static int countDownNumber = 3;
 		{
 			[[NSNotificationCenter defaultCenter] removeObserver:self name:AVCaptureDeviceSubjectAreaDidChangeNotification object:currentVideoDevice];
 			
-			[MSCamViewController setFlashMode:AVCaptureFlashModeAuto forDevice:videoDevice];
+			[MSCamViewController setFlashMode:AVCaptureFlashModeOff forDevice:videoDevice];
 			[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(subjectAreaDidChange:) name:AVCaptureDeviceSubjectAreaDidChangeNotification object:videoDevice];
 			
 			[[self session] addInput:videoDeviceInput];
@@ -409,14 +412,15 @@ static int countDownNumber = 3;
 		// Update the orientation on the still image output video connection before capturing.
 		[[[self stillImageOutput] connectionWithMediaType:AVMediaTypeVideo] setVideoOrientation:[[(AVCaptureVideoPreviewLayer *)[[self previewView] layer] connection] videoOrientation]];
 		
-		// Flash set to Auto for Still Capture
-		[MSCamViewController setFlashMode:AVCaptureFlashModeAuto forDevice:[[self videoDeviceInput] device]];
-		
+		// Flash set to Off for Still Capture
+        [MSCamViewController setFlashMode:AVCaptureFlashModeOff forDevice:[[self videoDeviceInput] device]];
+
         if (!self.isUserTapped) {
             AudioServicesPlaySystemSound(soundID);
         } else {
             AudioServicesDisposeSystemSoundID(soundID);
             soundID = 0;
+            [MSCamViewController setFlashMode:AVCaptureFlashModeAuto forDevice:[[self videoDeviceInput] device]];
         }
         
 		// Capture a still image.

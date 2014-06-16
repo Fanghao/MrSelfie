@@ -375,6 +375,7 @@ typedef enum {
     __weak __typeof(self) weakSelf = self;
     [self dismissViewControllerAnimated:NO completion:^(void){
         weakSelf.photos = nil;
+        weakSelf.positions = nil;
     }];
     
     [[Mixpanel sharedInstance] track:@"CLICKED_RETAKE_BUTTON"];

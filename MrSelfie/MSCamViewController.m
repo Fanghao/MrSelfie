@@ -351,7 +351,6 @@ static int countDownNumber = 3;
 		AVCaptureDevice *currentVideoDevice = [[self videoDeviceInput] device];
 		AVCaptureDevicePosition preferredPosition = AVCaptureDevicePositionUnspecified;
 		AVCaptureDevicePosition currentPosition = [currentVideoDevice position];
-        self.currentPosition = currentPosition;
 		
 		switch (currentPosition)
 		{
@@ -366,6 +365,7 @@ static int countDownNumber = 3;
 				break;
 		}
 		
+        self.currentPosition = preferredPosition;
 		AVCaptureDevice *videoDevice = [MSCamViewController deviceWithMediaType:AVMediaTypeVideo preferringPosition:preferredPosition];
 		AVCaptureDeviceInput *videoDeviceInput = [AVCaptureDeviceInput deviceInputWithDevice:videoDevice error:nil];
 		

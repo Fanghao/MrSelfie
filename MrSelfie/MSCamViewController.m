@@ -76,7 +76,8 @@ static int countDownNumber = 3;
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-    
+
+//    Uncomment for testing tutorial.
 //    NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
 //    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
     
@@ -495,7 +496,7 @@ static int countDownNumber = 3;
                         completion:^(BOOL finished) {
                             completionBlock();
                         }];
-        [self setTutorialSwipeComplete];
+        
     } else if (gestureRecognizer.direction == UISwipeGestureRecognizerDirectionDown) {
         [self cameraButtonPressed:self];
         [UIView transitionFromView:self.previewView
@@ -505,8 +506,9 @@ static int countDownNumber = 3;
                         completion:^(BOOL finished) {
                             completionBlock();
                         }];
-        [self setTutorialSwipeComplete];
     }
+    
+    [self setTutorialSwipeComplete];
 }
 
 - (void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer {

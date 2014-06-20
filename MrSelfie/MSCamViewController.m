@@ -77,9 +77,8 @@ static int countDownNumber = 3;
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
-//    Uncomment for testing tutorial.
-//    NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
-//    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
+    NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
+    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
     
     self.countDownLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 100)];
     self.countDownLabel.center = self.view.center;

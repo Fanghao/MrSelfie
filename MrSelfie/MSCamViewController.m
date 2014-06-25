@@ -55,6 +55,7 @@ static int countDownNumber = 3;
 @property (nonatomic, strong) RBVolumeButtons *buttonStealer;
 
 // Tutorial
+@property (nonatomic, strong) IBOutlet UIView *tutorialBackgroundView;
 @property (nonatomic, strong) IBOutlet UIImageView *tutorialImageView;
 @property (nonatomic) BOOL tutorialSwipeCompleted;
 @property (nonatomic) BOOL tutorialPressAndHoldCompleted;
@@ -773,12 +774,12 @@ static int countDownNumber = 3;
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!self.tutorialSwipeCompleted) {
                 self.tutorialImageView.image = [UIImage imageNamed:@"tutorial_swipe.png"];
-                self.tutorialImageView.hidden = NO;
+                self.tutorialBackgroundView.hidden = NO;
             } else if (!self.tutorialPressAndHoldCompleted) {
                 self.tutorialImageView.image = [UIImage imageNamed:@"tutorial_press_and_hold.png"];
-                self.tutorialImageView.hidden = NO;
+                self.tutorialBackgroundView.hidden = NO;
             } else {
-                self.tutorialImageView.hidden = YES;
+                self.tutorialBackgroundView.hidden = YES;
             }
         });
     });
@@ -825,7 +826,7 @@ static int countDownNumber = 3;
         return;
     }
     
-    self.tutorialImageView.hidden = YES;
+    self.tutorialBackgroundView.hidden = YES;
 }
 
 - (void)showTutorialImageView {
@@ -833,7 +834,7 @@ static int countDownNumber = 3;
         return;
     }
     
-    self.tutorialImageView.hidden = NO;
+    self.tutorialBackgroundView.hidden = NO;
 }
 
 @end

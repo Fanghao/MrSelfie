@@ -27,10 +27,17 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="dGx-B8-OWP">
-                                        <rect key="frame" x="0.0" y="179" width="320" height="210"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    </imageView>
+                                    <view alpha="0.70000000000000007" contentMode="scaleToFill" id="hdz-Gg-azo">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="dGx-B8-OWP">
+                                                <rect key="frame" x="0.0" y="179" width="320" height="210"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
@@ -41,6 +48,7 @@
                     <connections>
                         <outlet property="placeholderView" destination="vU5-ch-bAs" id="z90-dh-KhC"/>
                         <outlet property="previewView" destination="z01-xY-XP1" id="s9S-T5-sTy"/>
+                        <outlet property="tutorialBackgroundView" destination="hdz-Gg-azo" id="8Os-Te-YBt"/>
                         <outlet property="tutorialImageView" destination="dGx-B8-OWP" id="PeR-HK-9VR"/>
                         <segue destination="PWB-Ch-ZNO" kind="custom" id="Mlo-vN-3Wm"/>
                     </connections>

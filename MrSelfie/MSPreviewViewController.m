@@ -42,7 +42,10 @@ typedef enum {
 @property (nonatomic, strong) UIImage *firstImage;
 @property (nonatomic, strong) AVAssetWriter *videoWriter;
 @property (nonatomic) MediaTypeState mediaType;
+
+@property (nonatomic, strong) IBOutlet UIView *tutorialBackgroundView;
 @property (nonatomic, strong) IBOutlet UIImageView *tutorialImageView;
+@property (nonatomic) BOOL tutorialSwitchCompleted;
 
 - (IBAction)share:(id)sender;
 - (IBAction)retake:(id)sender;
@@ -124,6 +127,7 @@ typedef enum {
     [self createPhoto];
 
     [self trackShotTaken];
+    [self showTutorial];
 }
 
 - (UIImage *)addFlashOverlay:(UIImage *)backImage withAlpha:(CGFloat)alpha {
@@ -303,6 +307,8 @@ typedef enum {
     } else {
         self.mediaType = MediaTypeStatePhoto;
         self.currentIndex = 35;
+        
+        [self setTutorialSwitchComplete];
     }
 }
 
@@ -622,6 +628,41 @@ typedef enum {
         return YES;
     }
     return NO;
+}
+
+#pragma mark - tutorial
+
+- (void)showTutorial {
+    self.tutorialSwitchCompleted = YES;
+    
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+        self.tutorialSwitchCompleted = [[NSUserDefaults standardUserDefaults] boolForKey:@"tutorial-switch"];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (!self.tutorialSwitchCompleted) {
+                self.tutorialBackgroundView.hidden = NO;
+            } else {
+                self.tutorialBackgroundView.hidden = YES;
+            }
+        });
+    });
+}
+
+- (void)setTutorialSwitchComplete {
+    if (self.tutorialSwitchCompleted == YES) {
+        return;
+    }
+    
+    self.tutorialSwitchCompleted = YES;
+    
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+        [[NSUserDefaults standardUserDefaults] setObject:[[NSNumber alloc] initWithBool:YES] forKey:@"tutorial-switch"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showTutorial];
+        });
+    });
 }
 
 @end

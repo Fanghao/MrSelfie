@@ -89,6 +89,17 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
+                            <view alpha="0.69999998807907104" contentMode="scaleToFill" id="aJp-wk-VAR">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tutorial_press_and_switch.png" id="PdP-YR-vu0">
+                                        <rect key="frame" x="7" y="49" width="320" height="210"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                             <view contentMode="scaleToFill" id="FMB-DH-fYy">
                                 <rect key="frame" x="0.0" y="478" width="320" height="90"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
@@ -153,7 +164,8 @@
                         <outlet property="mediaTypeSegmentedControl" destination="SRS-dp-aFK" id="6Xj-Aa-uJI"/>
                         <outlet property="segmentControlContainer" destination="fV2-L5-up3" id="USD-KL-7KD"/>
                         <outlet property="segmentedControlBackgroundView" destination="K2G-m5-zgy" id="88Q-nx-yuH"/>
-                        <outlet property="tutorialImageView" destination="0Kz-Ww-jL2" id="Nbp-hq-KKI"/>
+                        <outlet property="tutorialBackgroundView" destination="aJp-wk-VAR" id="Sf4-Ne-luX"/>
+                        <outlet property="tutorialImageView" destination="PdP-YR-vu0" id="Ur6-E4-EBD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hBx-VJ-QZS" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -164,6 +176,7 @@
     <resources>
         <image name="back_button.png" width="126" height="126"/>
         <image name="default.png" width="320" height="480"/>
+        <image name="tutorial_press_and_switch.png" width="648" height="441"/>
         <image name="upload_button.png" width="126" height="126"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

@@ -16,7 +16,7 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "RBVolumeButtons.h"
 
-#define ImageCapacity 10
+#define ImageCapacity 24
 #define SnapInterval 0.6 // SnapInterval > 0.6 will cancel the shutter sounds
 
 static void * CapturingStillImageContext = &CapturingStillImageContext;

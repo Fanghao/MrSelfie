@@ -29,6 +29,7 @@ static int countDownNumber = 3;
 @property (strong, nonatomic) IBOutlet UIView *stillButtonView;
 @property (strong, nonatomic) IBOutlet MSCamPreviewView *previewView;
 @property (strong, nonatomic) IBOutlet UIView *placeholderView;
+@property (strong, nonatomic) IBOutlet UIButton *stillButton;
 
 @property (strong, nonatomic) UILabel *countDownLabel;
 
@@ -402,6 +403,7 @@ static int countDownNumber = 3;
 
 - (IBAction)stillButtonPressed:(id)sender {
     self.isUserTapped = YES;
+    self.stillButton.enabled = NO;
     [self stopTimer];
     [self stopCountDownTimer];
     [self snapStillImage];
@@ -454,6 +456,7 @@ static int countDownNumber = 3;
                     [self.navigationController presentViewController:previewVC animated:NO completion:^{
                         [weakSelf.imageArrays removeAllObjects];
                         [weakSelf.positionArrays removeAllObjects];
+                        weakSelf.stillButton.enabled = YES;
                     }];
                 }
 //                // TODO: remove
@@ -528,6 +531,14 @@ static int countDownNumber = 3;
         [self stopCountDownTimer];
         [self showTutorialImageView];
     }
+}
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    // Disallow recognition of tap gestures in the segmented control.
+    if ((touch.view == self.stillButton)) {
+        return NO;
+    }
+    return YES;
 }
 
 - (void)countDownAnimation {

@@ -40,6 +40,8 @@
 		BDFD6DB619258FCE00D74AEF /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFD6DB519258FCE00D74AEF /* ImageIO.framework */; };
 		BDFD6DB819258FD500D74AEF /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFD6DB719258FD500D74AEF /* MobileCoreServices.framework */; };
 		BDFD6DBA1925B1E000D74AEF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFD6DB91925B1E000D74AEF /* AVFoundation.framework */; };
+		C1298C10196605420042BB18 /* camera_downstate.png in Resources */ = {isa = PBXBuildFile; fileRef = C1298C0E196605420042BB18 /* camera_downstate.png */; };
+		C1298C11196605420042BB18 /* camera_upstate.png in Resources */ = {isa = PBXBuildFile; fileRef = C1298C0F196605420042BB18 /* camera_upstate.png */; };
 		C13377A81925701C0067F20E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C13377A71925701C0067F20E /* Foundation.framework */; };
 		C13377AA1925701C0067F20E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C13377A91925701C0067F20E /* CoreGraphics.framework */; };
 		C13377AC1925701C0067F20E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C13377AB1925701C0067F20E /* UIKit.framework */; };
@@ -119,6 +121,8 @@
 		BDFD6DB519258FCE00D74AEF /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		BDFD6DB719258FD500D74AEF /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		BDFD6DB91925B1E000D74AEF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		C1298C0E196605420042BB18 /* camera_downstate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = camera_downstate.png; path = images/camera_downstate.png; sourceTree = "<group>"; };
+		C1298C0F196605420042BB18 /* camera_upstate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = camera_upstate.png; path = images/camera_upstate.png; sourceTree = "<group>"; };
 		C13377A41925701C0067F20E /* Shots.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shots.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C13377A71925701C0067F20E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C13377A91925701C0067F20E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -215,6 +219,8 @@
 		BDFD6D99192589E100D74AEF /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				C1298C0E196605420042BB18 /* camera_downstate.png */,
+				C1298C0F196605420042BB18 /* camera_upstate.png */,
 				BDB10D34195CC70300E9E776 /* tutorial_press_and_switch.png */,
 				C18694BB1925C285003B9EE7 /* AppIcons */,
 				BDCD678E1942B63F003A5568 /* tutorial_press_and_hold.png */,
@@ -433,6 +439,7 @@
 				BDA24F4C192C3C4D00135A4E /* MPNotification.storyboard in Resources */,
 				C18694CD1925C285003B9EE7 /* Icon@2x.png in Resources */,
 				C13B9D46193000FB00908E97 /* photoShutter2.caf in Resources */,
+				C1298C10196605420042BB18 /* camera_downstate.png in Resources */,
 				BDA24F4F192C3C4D00135A4E /* MPSurvey.storyboard in Resources */,
 				C18694CC1925C285003B9EE7 /* Icon.png in Resources */,
 				BDFD6D9819257C4900D74AEF /* Main.storyboard in Resources */,
@@ -442,6 +449,7 @@
 				C18694B81925C064003B9EE7 /* default-568h@2x.png in Resources */,
 				C13377B21925701C0067F20E /* InfoPlist.strings in Resources */,
 				BDA24F49192C3C4D00135A4E /* MPCloseBtn.png in Resources */,
+				C1298C11196605420042BB18 /* camera_upstate.png in Resources */,
 				C13377BA1925701C0067F20E /* Images.xcassets in Resources */,
 				C18694B91925C064003B9EE7 /* default.png in Resources */,
 				BDA24F4A192C3C4D00135A4E /* MPCloseBtn@2x.png in Resources */,

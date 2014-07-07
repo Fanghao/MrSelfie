@@ -326,6 +326,8 @@ static int countDownNumber = 3;
         default:
             break;
     }
+    self.stillButton.center = CGPointMake(self.view.frame.size.width / 2, self.stillButton.center.y);
+    self.tutorialImageView.center = CGPointMake(self.view.frame.size.width / 2, self.tutorialImageView.center.y);
 }
 
 #pragma mark - Private Methods

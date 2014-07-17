@@ -777,6 +777,8 @@ static int countDownNumber = 3;
 #pragma mark - Tutorial
 
 - (void)showTutorial {
+    return; // disable tutorial
+    
     self.tutorialSwipeCompleted = YES;
     self.tutorialPressAndHoldCompleted = YES;
     
@@ -843,6 +845,8 @@ static int countDownNumber = 3;
 }
 
 - (void)showTutorialImageView {
+    return; // disable tutorial
+    
     if (self.tutorialPressAndHoldCompleted == YES) {
         return;
     }
